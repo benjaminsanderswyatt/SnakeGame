@@ -1,0 +1,20 @@
+package com.bsw.snakes.enviroments;
+
+import android.graphics.Canvas;
+
+public class GameMap {
+
+    private final int[][] spriteIds;
+
+    public GameMap(int[][] spriteIds){
+        this.spriteIds = spriteIds;
+    }
+
+
+    public void draw(Canvas c){
+        for (int j = 0; j < spriteIds.length; j++)
+            for (int i = 0; i < spriteIds[j].length; i++){
+                c.drawBitmap(Floor.OUTSIDE.getSprites(spriteIds[j][i]),i * 16 * 6,j * 16 * 6, null);
+            }
+    }
+}
