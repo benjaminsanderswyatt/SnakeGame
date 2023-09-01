@@ -1,8 +1,5 @@
 package com.bsw.snakes.inputs;
 
-import static com.bsw.snakes.MainActivity.GAME_HEIGHT;
-import static com.bsw.snakes.MainActivity.GAME_WIDTH;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,7 +10,7 @@ import com.bsw.snakes.helpers.GameConstants;
 
 public class TouchEvents {
     private final GamePanel gamePanel;
-    private float xCenter = GAME_WIDTH / 2,yCenter = GAME_HEIGHT - (GAME_HEIGHT / 4),radius = 100;
+    private float xCenter = GameConstants.GAME_WIDTH / 2,yCenter = GameConstants.GAME_HEIGHT - (GameConstants.GAME_HEIGHT / 4),radius = 100;
     private final Paint circlePaint, yellowPaint;
     private float xTouch,yTouch;
     private boolean touchDown;

@@ -15,7 +15,6 @@ import com.bsw.snakes.entities.GameCharacters;
 import com.bsw.snakes.entities.SnakePoints;
 import com.bsw.snakes.enviroments.GameMap;
 import com.bsw.snakes.helpers.GameConstants;
-import com.bsw.snakes.helpers.Scalers;
 import com.bsw.snakes.inputs.TouchEvents;
 
 import java.util.ArrayList;
@@ -23,6 +22,15 @@ import java.util.List;
 import java.util.Random;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
+
+
+    //Uses the formula   Math.Ciel( GAMEWIDTH / BITSCALER ) = sizeOfMapX   to get the number of tiles in its respective orientation
+    //then does    ( ( sizeOfMapX * BITSCALER ) - GAMEWIDTH ) / 2 = OffsetX     to get the offset required for the canvas to centre on the screen
+    float DRAWOFFSETX = ((((int) Math.ceil(GameConstants.GAME_WIDTH/(GameConstants.BITSCALER))) * GameConstants.BITSCALER) - GameConstants.GAME_WIDTH) / 2;
+    float DRAWOFFSETY = ((((int) Math.ceil(GameConstants.GAME_HEIGHT/(GameConstants.BITSCALER))) * GameConstants.BITSCALER) - GameConstants.GAME_HEIGHT) / 2;
+
+
+
 
     private final SurfaceHolder holder;
     private final GameLoop gameLoop;
@@ -49,11 +57,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void init(){
 
         //Map Size. This includes the walls (so playable area is -2 to each)
-        gameMapSizeX = 10;
-        gameMapSizeY = 16;
+        //gameMapSizeX = 12;
+        //gameMapSizeY = 16;
+        gameMapSizeX = (int) Math.ceil(GameConstants.GAME_WIDTH/(GameConstants.BITSCALER));
+        gameMapSizeY = (int) Math.ceil(GameConstants.GAME_HEIGHT/(GameConstants.BITSCALER));
+
 
         //Snake head starting position. The snake starts moving UP and the body is generated bellow the head.
-        startPosition = new PointF(5 * Scalers.BITSCALER,5 * Scalers.BITSCALER);
+        startPosition = new PointF(5 * GameConstants.BITSCALER,5 * GameConstants.BITSCALER);
 
         //Snake starting length
         snakeStartSize = 3;
@@ -101,7 +112,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         for(int i = 0; i < snakeStartSize; i++){
             snakePoints.add(i,new SnakePoints(startPosition.x,startPosition.y));
-            startPosition.y += Scalers.BITSCALER;
+            startPosition.y += GameConstants.BITSCALER;
         }
 
 
@@ -110,12 +121,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void render(){
 
         Canvas c = holder.lockCanvas();
-        c.drawColor(Color.BLACK);
 
-        Map.draw(c);
+        Map.draw(c, DRAWOFFSETX,DRAWOFFSETY);
 
 
-        c.drawBitmap(Fruit.FRUIT.getSprite(fruitType),fruitPos.x,fruitPos.y,null);
+        c.drawBitmap(Fruit.FRUIT.getSprite(fruitType),fruitPos.x - DRAWOFFSETX,fruitPos.y - DRAWOFFSETY,null);
 
 
 
@@ -125,7 +135,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
 
         //Head of snake
-        c.drawBitmap(GameCharacters.SNAKE.getSprite(0, snakeCurrentlyFacing),snakePoints.get(0).getxPosition(),snakePoints.get(0).getyPosition(),null);
+        c.drawBitmap(GameCharacters.SNAKE.getSprite(0, snakeCurrentlyFacing),snakePoints.get(0).getxPosition() - DRAWOFFSETX, snakePoints.get(0).getyPosition() - DRAWOFFSETY,null);
 
         //Middle of snake
         for (int i = 1; i < snakePoints.size() - 1; i++){
@@ -199,7 +209,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
                 spriteIdX = 3;
             }
 
-            c.drawBitmap(GameCharacters.SNAKE.getSprite(spriteIdY, spriteIdX),snakePoints.get(i).getxPosition(),snakePoints.get(i).getyPosition(),null);
+            c.drawBitmap(GameCharacters.SNAKE.getSprite(spriteIdY, spriteIdX),snakePoints.get(i).getxPosition()  - DRAWOFFSETX, snakePoints.get(i).getyPosition() - DRAWOFFSETY,null);
         }
 
         //Tail of snake
@@ -232,7 +242,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         }
 
 
-        c.drawBitmap(GameCharacters.SNAKE.getSprite(3, spriteIdX),snakePoints.get(snakePoints.size() - 1).getxPosition(),snakePoints.get(snakePoints.size() - 1).getyPosition(),null);
+        c.drawBitmap(GameCharacters.SNAKE.getSprite(3, spriteIdX),snakePoints.get(snakePoints.size() - 1).getxPosition() - DRAWOFFSETX, snakePoints.get(snakePoints.size() - 1).getyPosition() - DRAWOFFSETY,null);
 
 
 
@@ -270,22 +280,22 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         switch (snakeMoveTo){
             case GameConstants.FACE_Dir.UP:
                 //y -= 16 * 6;
-                snakePoints.get(0).setyPosition(snakePoints.get(0).getyPosition() - Scalers.BITSCALER);
+                snakePoints.get(0).setyPosition(snakePoints.get(0).getyPosition() - GameConstants.BITSCALER);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.UP;
                 break;
             case GameConstants.FACE_Dir.LEFT:
                 //x += 16 * 6;
-                snakePoints.get(0).setxPosition(snakePoints.get(0).getxPosition() + Scalers.BITSCALER);
+                snakePoints.get(0).setxPosition(snakePoints.get(0).getxPosition() + GameConstants.BITSCALER);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.LEFT;
                 break;
             case GameConstants.FACE_Dir.DOWN:
                 //y += 16 * 6;
-                snakePoints.get(0).setyPosition(snakePoints.get(0).getyPosition() + Scalers.BITSCALER);
+                snakePoints.get(0).setyPosition(snakePoints.get(0).getyPosition() + GameConstants.BITSCALER);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.DOWN;
                 break;
             case GameConstants.FACE_Dir.RIGHT:
                 //x -= 16 * 6;
-                snakePoints.get(0).setxPosition(snakePoints.get(0).getxPosition() - Scalers.BITSCALER);
+                snakePoints.get(0).setxPosition(snakePoints.get(0).getxPosition() - GameConstants.BITSCALER);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.RIGHT;
                 break;
         }
@@ -329,8 +339,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         while (!validPos){
             validPos = true;
 
-            fruitPos.x = (rnd.nextInt(gameMapSizeX - 3 + 1) + 1) * Scalers.BITSCALER;
-            fruitPos.y = (rnd.nextInt(gameMapSizeY - 3 + 1) + 1) * Scalers.BITSCALER;
+            fruitPos.x = (rnd.nextInt(gameMapSizeX - 3 + 1) + 1) * GameConstants.BITSCALER;
+            fruitPos.y = (rnd.nextInt(gameMapSizeY - 3 + 1) + 1) * GameConstants.BITSCALER;
 
             for (int i = 0; i < snakePoints.size(); i++) {
 
@@ -351,8 +361,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         float headX = snakePoints.get(0).getxPosition();
         float headY = snakePoints.get(0).getyPosition();
 
-        if (headY == 0 || headY == (gameMapSizeY - 1) * Scalers.BITSCALER ||
-        headX == 0 || headX == (gameMapSizeX - 1) * Scalers.BITSCALER){
+        if (headY == 0 || headY == (gameMapSizeY - 1) * GameConstants.BITSCALER ||
+        headX == 0 || headX == (gameMapSizeX - 1) * GameConstants.BITSCALER){
             return false;
         }
 

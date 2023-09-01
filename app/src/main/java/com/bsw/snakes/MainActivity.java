@@ -4,16 +4,16 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bsw.snakes.helpers.GameConstants;
+
 public class MainActivity extends AppCompatActivity {
 
     private static Context gameContext;
-    public static int GAME_WIDTH, GAME_HEIGHT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getRealMetrics(dm);
 
-        GAME_WIDTH = dm.widthPixels;
-        GAME_HEIGHT = dm.heightPixels;
+        GameConstants.GAME_WIDTH = dm.widthPixels;
+        GameConstants.GAME_HEIGHT = dm.heightPixels;
 
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |

@@ -1,5 +1,7 @@
 package com.bsw.snakes;
 
+import com.bsw.snakes.helpers.GameConstants;
+
 public class GameLoop implements Runnable {
 
     private final Thread gameThread;
@@ -17,7 +19,7 @@ public class GameLoop implements Runnable {
         long nanoSec = 1_000_000_000;
 
         boolean stillAlive = true;
-        double oneSecCounter = 0;
+        double SecCounter = 0;
 
         while(stillAlive){
 
@@ -26,11 +28,11 @@ public class GameLoop implements Runnable {
             double delta = timeSinceLastDelta / nanoSec;
 
 
-            oneSecCounter += delta;
+            SecCounter += delta;
 
-            //snake moves every 1 second
-            if (oneSecCounter >= 1) {
-                oneSecCounter = 0;
+            //snake moves every GAME_SPEED second
+            if (SecCounter >= GameConstants.GAME_SPEED) {
+                SecCounter = 0;
 
                 gamepanel.checkFruitEaten();
 
