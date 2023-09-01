@@ -17,6 +17,7 @@ public class GameLoop implements Runnable {
         long nanoSec = 1_000_000_000;
 
         boolean stillAlive = true;
+        double oneSecCounter = 0;
 
         while(stillAlive){
 
@@ -24,10 +25,20 @@ public class GameLoop implements Runnable {
             double timeSinceLastDelta = nowDelta - lastDelta;
             double delta = timeSinceLastDelta / nanoSec;
 
-                gamepanel.update(delta);
+
+            oneSecCounter += delta;
+
+            //snake moves every 1 second
+            if (oneSecCounter >= 1) {
+                oneSecCounter = 0;
+
+                gamepanel.checkFruitEaten();
+
+                gamepanel.updateSnakeMove();
                 gamepanel.render();
                 stillAlive = gamepanel.checkStillAlive();
 
+            }
 
             lastDelta = nowDelta;
 

@@ -1,27 +1,27 @@
 package com.bsw.snakes.entities;
 
 public class SnakePoints {
-    float xPosition;
-    float yPosition;
+    int xPosition;
+    int yPosition;
 
-    public SnakePoints(float xPosition, float yPosition) {
+    public SnakePoints(int xPosition, int yPosition) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
     }
 
-    public float getxPosition() {
+    public int getxPosition() {
         return xPosition;
     }
 
-    public void setxPosition(float xPosition) {
+    public void setxPosition(int xPosition) {
         this.xPosition = xPosition;
     }
 
-    public float getyPosition() {
+    public int getyPosition() {
         return yPosition;
     }
 
-    public void setyPosition(float yPosition) {
+    public void setyPosition(int yPosition) {
         this.yPosition = yPosition;
     }
 }

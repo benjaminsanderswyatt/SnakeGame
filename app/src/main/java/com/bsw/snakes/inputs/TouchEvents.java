@@ -31,6 +31,8 @@ public class TouchEvents {
         yellowPaint.setStrokeWidth(2);
     }
 
+
+    //TESTER FOR TOUCH EVENTS
     public void draw (Canvas c){
         c.drawCircle(xCenter,yCenter,radius,circlePaint);
         if (touchDown) {

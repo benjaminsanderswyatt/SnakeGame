@@ -3,14 +3,14 @@ package com.bsw.snakes;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PointF;
+import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
 
+import com.bsw.snakes.entities.Fruit;
 import com.bsw.snakes.entities.GameCharacters;
 import com.bsw.snakes.entities.SnakePoints;
 import com.bsw.snakes.enviroments.GameMap;
@@ -23,32 +23,55 @@ import java.util.Random;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
-    private Paint redPaint = new Paint();
-    private SurfaceHolder holder;
-    private Random rand = new Random();
-    private GameLoop gameLoop;
-    private TouchEvents touchEvents;
-    private PointF startPosition = new PointF(5 * (16 * 6),5 * (16 * 6));
-    private int snakeCurrentlyFacing = GameConstants.FACE_Dir.UP, snakeMoveTo = GameConstants.FACE_Dir.UP;
+    private final SurfaceHolder holder;
+    private final GameLoop gameLoop;
+    private final TouchEvents touchEvents;
+
+    private final int bScaleFactor = 16 * 6; //The bitmap scale factor for the sprites
+
     public List<SnakePoints> snakePoints = new ArrayList<>();
-    private int gameMapSizeX = 10, gameMapSizeY = 16; //Size of game area counting the walls
+
+    private int gameMapSizeX, gameMapSizeY;
+    private int snakeStartSize;
+    private Point startPosition = new Point();
+
+    private final Point fruitPos = new Point(); //Pos set to 0 0 as gameloop does checkFruitEaten
+    private int fruitType = 0;
+
+    private int snakeCurrentlyFacing = GameConstants.FACE_Dir.UP, snakeMoveTo = GameConstants.FACE_Dir.UP;
+
+    private final GameMap Map;//Map
+
+
+    public void init(){
+
+        //Map Size. This includes the walls (so playable area is -2 to each)
+        gameMapSizeX = 10;
+        gameMapSizeY = 16;
+
+        //Snake head starting position. The snake starts moving UP and the body is generated bellow the head.
+        startPosition = new Point(5 * bScaleFactor,5 * bScaleFactor);
+
+        //Snake starting length
+        snakeStartSize = 3;
+
+
+        createFruit();
+    }
 
 
 
-    //Map
-    private GameMap Map;
 
     public GamePanel(Context context) {
         super(context);
         holder = getHolder();
         holder.addCallback(this);
-        redPaint.setColor(Color.RED);
 
         touchEvents = new TouchEvents(this);
 
         gameLoop = new GameLoop(this);
 
-
+        init(); //Initialize game values
 
         int[][] gameMapIds = new int[gameMapSizeY][gameMapSizeX];
 
@@ -73,18 +96,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         Map = new GameMap(gameMapIds);
 
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < snakeStartSize; i++){
             snakePoints.add(i,new SnakePoints(startPosition.x,startPosition.y));
-            startPosition.y += 16 * 6;
+            startPosition.y += bScaleFactor;
         }
 
 
-
-
-
-
     }
-
 
     public void render(){
 
@@ -93,7 +111,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         Map.draw(c);
 
-        touchEvents.draw(c);
+
+        c.drawBitmap(Fruit.FRUIT.getSprite(fruitType),fruitPos.x,fruitPos.y,null);
+
+
+
+        //TESTER FOR TOUCH EVENTS
+        //touchEvents.draw(c);
+
+
 
         //Head of snake
         c.drawBitmap(GameCharacters.SNAKE.getSprite(0, snakeCurrentlyFacing),snakePoints.get(0).getxPosition(),snakePoints.get(0).getyPosition(),null);
@@ -108,20 +134,20 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             //When displaying the current section whether the adjacent sections are the previous or next
             //doesn't matter as they display the same
 
-            float previousBodyX = snakePoints.get(i - 1).getxPosition();
-            float previousBodyY = snakePoints.get(i - 1).getyPosition();
+            int previousBodyX = snakePoints.get(i - 1).getxPosition();
+            int previousBodyY = snakePoints.get(i - 1).getyPosition();
 
-            float bodyX = snakePoints.get(i).getxPosition();
-            float bodyY = snakePoints.get(i).getyPosition();
+            int bodyX = snakePoints.get(i).getxPosition();
+            int bodyY = snakePoints.get(i).getyPosition();
 
-            float nextBodyX = snakePoints.get(i + 1).getxPosition();
-            float nextBodyY = snakePoints.get(i + 1).getyPosition();
+            int nextBodyX = snakePoints.get(i + 1).getxPosition();
+            int nextBodyY = snakePoints.get(i + 1).getyPosition();
 
-            float nowXRelToPrev = bodyX - previousBodyX;
-            float nowXRelToNext = bodyX - nextBodyX;
+            int nowXRelToPrev = bodyX - previousBodyX;
+            int nowXRelToNext = bodyX - nextBodyX;
 
-            float nowYRelToPrev = bodyY - previousBodyY;
-            float nowYRelToNext = bodyY - nextBodyY;
+            int nowYRelToPrev = bodyY - previousBodyY;
+            int nowYRelToNext = bodyY - nextBodyY;
 
             int spriteIdY = 0;
             int spriteIdX = 0;
@@ -175,8 +201,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         //Tail of snake
 
-        float nowXRelToPrev = snakePoints.get(snakePoints.size() - 1).getxPosition() - snakePoints.get(snakePoints.size() - 2).getxPosition();
-        float nowYRelToPrev = snakePoints.get(snakePoints.size() - 1).getyPosition() - snakePoints.get(snakePoints.size() - 2).getyPosition();
+        int nowXRelToPrev = snakePoints.get(snakePoints.size() - 1).getxPosition() - snakePoints.get(snakePoints.size() - 2).getxPosition();
+        int nowYRelToPrev = snakePoints.get(snakePoints.size() - 1).getyPosition() - snakePoints.get(snakePoints.size() - 2).getyPosition();
 
         int spriteIdX = 0;
 
@@ -211,22 +237,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
 
 
-    double oneSecCounter = 0;
-    public void update(double delta){
-        oneSecCounter += delta;
-
-        //snake moves every 1 second
-        if (oneSecCounter >= 1) {
-            oneSecCounter = 0;
-
-
-            updateSnakeMove(delta);
-        }
-
-
-    }
-
-    private void updateSnakeMove(double delta) {
+    public void updateSnakeMove() {
 
         int snakeOppositeFacting;
 
@@ -242,8 +253,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         //move body
         for (int i = snakePoints.size() - 1; i > 0; i--){
-            float prevBodyX = snakePoints.get(i - 1).getxPosition();
-            float prevBodyY = snakePoints.get(i - 1).getyPosition();
+            int prevBodyX = snakePoints.get(i - 1).getxPosition();
+            int prevBodyY = snakePoints.get(i - 1).getyPosition();
 
 
             snakePoints.get(i).setxPosition(prevBodyX);
@@ -256,22 +267,22 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         switch (snakeMoveTo){
             case GameConstants.FACE_Dir.UP:
                 //y -= 16 * 6;
-                snakePoints.get(0).setyPosition(snakePoints.get(0).getyPosition() - 16 * 6);
+                snakePoints.get(0).setyPosition(snakePoints.get(0).getyPosition() - bScaleFactor);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.UP;
                 break;
             case GameConstants.FACE_Dir.LEFT:
                 //x += 16 * 6;
-                snakePoints.get(0).setxPosition(snakePoints.get(0).getxPosition() + 16 * 6);
+                snakePoints.get(0).setxPosition(snakePoints.get(0).getxPosition() + bScaleFactor);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.LEFT;
                 break;
             case GameConstants.FACE_Dir.DOWN:
                 //y += 16 * 6;
-                snakePoints.get(0).setyPosition(snakePoints.get(0).getyPosition() + 16 * 6);
+                snakePoints.get(0).setyPosition(snakePoints.get(0).getyPosition() + bScaleFactor);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.DOWN;
                 break;
             case GameConstants.FACE_Dir.RIGHT:
                 //x -= 16 * 6;
-                snakePoints.get(0).setxPosition(snakePoints.get(0).getxPosition() - 16 * 6);
+                snakePoints.get(0).setxPosition(snakePoints.get(0).getxPosition() - bScaleFactor);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.RIGHT;
                 break;
         }
@@ -286,15 +297,59 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
 
 
+    public void checkFruitEaten(){
+
+        if (fruitPos.x == snakePoints.get(0).getxPosition() &&
+                fruitPos.y == snakePoints.get(0).getyPosition()){
+
+            //if fruit has been eaten add to snake size next time the snake moves
+            snakePoints.add(snakePoints.size(), new SnakePoints(
+                    snakePoints.get(snakePoints.size() - 1).getxPosition(),snakePoints.get(snakePoints.size() - 1).getyPosition()));
+
+            createFruit();
+        }
+
+
+    }
+
+
+
+    public void createFruit(){
+        boolean validPos = false;
+
+        Random rnd = new Random();
+        //rnd.nextInt(Max + 1);//random number between 0 & Max.   0,1,2,3,4
+
+        fruitType = rnd.nextInt(2);
+
+
+        while (!validPos){
+            validPos = true;
+
+            fruitPos.x = (rnd.nextInt(gameMapSizeX - 3 + 1) + 1) * bScaleFactor;
+            fruitPos.y = (rnd.nextInt(gameMapSizeY - 3 + 1) + 1) * bScaleFactor;
+
+            for (int i = 0; i < snakePoints.size(); i++) {
+
+                if(fruitPos.x == snakePoints.get(i).getxPosition() &&
+                        fruitPos.y == snakePoints.get(i).getyPosition()){
+                    validPos = false;
+                }
+            }
+
+        }
+
+    }
+
 
     public boolean checkStillAlive(){
         //the snake is still alive as long as its head doesn't touch its tail or a wall
 
-        float headX = snakePoints.get(0).getxPosition();
-        float headY = snakePoints.get(0).getyPosition();
+        int headX = snakePoints.get(0).getxPosition();
+        int headY = snakePoints.get(0).getyPosition();
 
-        if (headY == 0 || headY == (gameMapSizeY - 1) * 16 * 6||
-        headX == 0 || headX == (gameMapSizeX - 1) * 16 * 6){
+        if (headY == 0 || headY == (gameMapSizeY - 1) * bScaleFactor ||
+        headX == 0 || headX == (gameMapSizeX - 1) * bScaleFactor){
             return false;
         }
 
