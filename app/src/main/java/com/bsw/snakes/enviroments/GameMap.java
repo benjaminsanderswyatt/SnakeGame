@@ -2,6 +2,8 @@ package com.bsw.snakes.enviroments;
 
 import android.graphics.Canvas;
 
+import com.bsw.snakes.helpers.Scalers;
+
 public class GameMap {
 
     private final int[][] spriteIds;
@@ -14,7 +16,7 @@ public class GameMap {
     public void draw(Canvas c){
         for (int j = 0; j < spriteIds.length; j++)
             for (int i = 0; i < spriteIds[j].length; i++){
-                c.drawBitmap(Floor.OUTSIDE.getSprites(spriteIds[j][i]),i * 16 * 6,j * 16 * 6, null);
+                c.drawBitmap(Floor.OUTSIDE.getSprites(spriteIds[j][i]),i * Scalers.BITSCALER,j * Scalers.BITSCALER, null);
             }
     }
 }

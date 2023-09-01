@@ -3,7 +3,7 @@ package com.bsw.snakes;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Point;
+import android.graphics.PointF;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -15,6 +15,7 @@ import com.bsw.snakes.entities.GameCharacters;
 import com.bsw.snakes.entities.SnakePoints;
 import com.bsw.snakes.enviroments.GameMap;
 import com.bsw.snakes.helpers.GameConstants;
+import com.bsw.snakes.helpers.Scalers;
 import com.bsw.snakes.inputs.TouchEvents;
 
 import java.util.ArrayList;
@@ -27,15 +28,17 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private final GameLoop gameLoop;
     private final TouchEvents touchEvents;
 
-    private final int bScaleFactor = 16 * 6; //The bitmap scale factor for the sprites
+    //private final float bScaleFactor = 16 * Scalers.SCALER; //The bitmap scale factor for the sprites
+    //replaces with Scalers.BITSCALER
+
 
     public List<SnakePoints> snakePoints = new ArrayList<>();
 
     private int gameMapSizeX, gameMapSizeY;
     private int snakeStartSize;
-    private Point startPosition = new Point();
+    private PointF startPosition = new PointF();
 
-    private final Point fruitPos = new Point(); //Pos set to 0 0 as gameloop does checkFruitEaten
+    private final PointF fruitPos = new PointF(); //Pos set to 0 0 as gameloop does checkFruitEaten
     private int fruitType = 0;
 
     private int snakeCurrentlyFacing = GameConstants.FACE_Dir.UP, snakeMoveTo = GameConstants.FACE_Dir.UP;
@@ -50,7 +53,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         gameMapSizeY = 16;
 
         //Snake head starting position. The snake starts moving UP and the body is generated bellow the head.
-        startPosition = new Point(5 * bScaleFactor,5 * bScaleFactor);
+        startPosition = new PointF(5 * Scalers.BITSCALER,5 * Scalers.BITSCALER);
 
         //Snake starting length
         snakeStartSize = 3;
@@ -98,7 +101,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         for(int i = 0; i < snakeStartSize; i++){
             snakePoints.add(i,new SnakePoints(startPosition.x,startPosition.y));
-            startPosition.y += bScaleFactor;
+            startPosition.y += Scalers.BITSCALER;
         }
 
 
@@ -134,20 +137,20 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
             //When displaying the current section whether the adjacent sections are the previous or next
             //doesn't matter as they display the same
 
-            int previousBodyX = snakePoints.get(i - 1).getxPosition();
-            int previousBodyY = snakePoints.get(i - 1).getyPosition();
+            float previousBodyX = snakePoints.get(i - 1).getxPosition();
+            float previousBodyY = snakePoints.get(i - 1).getyPosition();
 
-            int bodyX = snakePoints.get(i).getxPosition();
-            int bodyY = snakePoints.get(i).getyPosition();
+            float bodyX = snakePoints.get(i).getxPosition();
+            float bodyY = snakePoints.get(i).getyPosition();
 
-            int nextBodyX = snakePoints.get(i + 1).getxPosition();
-            int nextBodyY = snakePoints.get(i + 1).getyPosition();
+            float nextBodyX = snakePoints.get(i + 1).getxPosition();
+            float nextBodyY = snakePoints.get(i + 1).getyPosition();
 
-            int nowXRelToPrev = bodyX - previousBodyX;
-            int nowXRelToNext = bodyX - nextBodyX;
+            float nowXRelToPrev = bodyX - previousBodyX;
+            float nowXRelToNext = bodyX - nextBodyX;
 
-            int nowYRelToPrev = bodyY - previousBodyY;
-            int nowYRelToNext = bodyY - nextBodyY;
+            float nowYRelToPrev = bodyY - previousBodyY;
+            float nowYRelToNext = bodyY - nextBodyY;
 
             int spriteIdY = 0;
             int spriteIdX = 0;
@@ -201,8 +204,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         //Tail of snake
 
-        int nowXRelToPrev = snakePoints.get(snakePoints.size() - 1).getxPosition() - snakePoints.get(snakePoints.size() - 2).getxPosition();
-        int nowYRelToPrev = snakePoints.get(snakePoints.size() - 1).getyPosition() - snakePoints.get(snakePoints.size() - 2).getyPosition();
+        float nowXRelToPrev = snakePoints.get(snakePoints.size() - 1).getxPosition() - snakePoints.get(snakePoints.size() - 2).getxPosition();
+        float nowYRelToPrev = snakePoints.get(snakePoints.size() - 1).getyPosition() - snakePoints.get(snakePoints.size() - 2).getyPosition();
 
         int spriteIdX = 0;
 
@@ -253,8 +256,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
         //move body
         for (int i = snakePoints.size() - 1; i > 0; i--){
-            int prevBodyX = snakePoints.get(i - 1).getxPosition();
-            int prevBodyY = snakePoints.get(i - 1).getyPosition();
+            float prevBodyX = snakePoints.get(i - 1).getxPosition();
+            float prevBodyY = snakePoints.get(i - 1).getyPosition();
 
 
             snakePoints.get(i).setxPosition(prevBodyX);
@@ -267,22 +270,22 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         switch (snakeMoveTo){
             case GameConstants.FACE_Dir.UP:
                 //y -= 16 * 6;
-                snakePoints.get(0).setyPosition(snakePoints.get(0).getyPosition() - bScaleFactor);
+                snakePoints.get(0).setyPosition(snakePoints.get(0).getyPosition() - Scalers.BITSCALER);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.UP;
                 break;
             case GameConstants.FACE_Dir.LEFT:
                 //x += 16 * 6;
-                snakePoints.get(0).setxPosition(snakePoints.get(0).getxPosition() + bScaleFactor);
+                snakePoints.get(0).setxPosition(snakePoints.get(0).getxPosition() + Scalers.BITSCALER);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.LEFT;
                 break;
             case GameConstants.FACE_Dir.DOWN:
                 //y += 16 * 6;
-                snakePoints.get(0).setyPosition(snakePoints.get(0).getyPosition() + bScaleFactor);
+                snakePoints.get(0).setyPosition(snakePoints.get(0).getyPosition() + Scalers.BITSCALER);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.DOWN;
                 break;
             case GameConstants.FACE_Dir.RIGHT:
                 //x -= 16 * 6;
-                snakePoints.get(0).setxPosition(snakePoints.get(0).getxPosition() - bScaleFactor);
+                snakePoints.get(0).setxPosition(snakePoints.get(0).getxPosition() - Scalers.BITSCALER);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.RIGHT;
                 break;
         }
@@ -326,8 +329,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         while (!validPos){
             validPos = true;
 
-            fruitPos.x = (rnd.nextInt(gameMapSizeX - 3 + 1) + 1) * bScaleFactor;
-            fruitPos.y = (rnd.nextInt(gameMapSizeY - 3 + 1) + 1) * bScaleFactor;
+            fruitPos.x = (rnd.nextInt(gameMapSizeX - 3 + 1) + 1) * Scalers.BITSCALER;
+            fruitPos.y = (rnd.nextInt(gameMapSizeY - 3 + 1) + 1) * Scalers.BITSCALER;
 
             for (int i = 0; i < snakePoints.size(); i++) {
 
@@ -345,11 +348,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public boolean checkStillAlive(){
         //the snake is still alive as long as its head doesn't touch its tail or a wall
 
-        int headX = snakePoints.get(0).getxPosition();
-        int headY = snakePoints.get(0).getyPosition();
+        float headX = snakePoints.get(0).getxPosition();
+        float headY = snakePoints.get(0).getyPosition();
 
-        if (headY == 0 || headY == (gameMapSizeY - 1) * bScaleFactor ||
-        headX == 0 || headX == (gameMapSizeX - 1) * bScaleFactor){
+        if (headY == 0 || headY == (gameMapSizeY - 1) * Scalers.BITSCALER ||
+        headX == 0 || headX == (gameMapSizeX - 1) * Scalers.BITSCALER){
             return false;
         }
 

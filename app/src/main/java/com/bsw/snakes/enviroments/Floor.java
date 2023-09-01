@@ -20,7 +20,7 @@ public enum Floor implements BitmapMethods {
         for(int j = 0; j < tilesInHeight; j++)
             for(int i = 0; i < tilesInWidth; i++){
                 int index = j * tilesInWidth + i;
-                sprites[index] = getScaledBitmap(Bitmap.createBitmap(spriteSheet,16 *i,16*j,16,16));
+                sprites[index] = getScaledBitmap(Bitmap.createBitmap(spriteSheet,16 * i,16 * j,16,16));
             }
 
     }
