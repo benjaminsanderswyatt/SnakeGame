@@ -3,7 +3,7 @@ package com.bsw.snakes.enviroments;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.bsw.snakes.MainActivity;
+import com.bsw.snakes.main.MainActivity;
 import com.bsw.snakes.R;
 import com.bsw.snakes.helpers.interfaces.BitmapMethods;
 

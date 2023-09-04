@@ -1,4 +1,4 @@
-package com.bsw.snakes;
+package com.bsw.snakes.main;
 
 import android.content.Context;
 import android.os.Build;
