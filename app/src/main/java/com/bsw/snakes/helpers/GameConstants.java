@@ -14,8 +14,6 @@ public class GameConstants {
     public static final float BITSCALER = SCALER * 16; //The bitmap scale factor for the sprites
 
 
-
-
     public static final class FACE_Dir{
         public static final int UP = 0;
         public static final int LEFT = 1;

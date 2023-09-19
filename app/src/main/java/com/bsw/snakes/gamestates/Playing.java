@@ -1,8 +1,6 @@
 package com.bsw.snakes.gamestates;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 
@@ -13,6 +11,8 @@ import com.bsw.snakes.enviroments.GameMap;
 import com.bsw.snakes.helpers.GameConstants;
 import com.bsw.snakes.helpers.interfaces.GameStateInterface;
 import com.bsw.snakes.main.Game;
+import com.bsw.snakes.ui.ButtonImages;
+import com.bsw.snakes.ui.CustomButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +41,12 @@ public class Playing extends BaseState implements GameStateInterface {
 
 
     //for touch events
-    private float xCenter = GameConstants.GAME_WIDTH / 2,yCenter = GameConstants.GAME_HEIGHT - (GameConstants.GAME_HEIGHT / 4),radius = 100;
+    private float xTDown, yTDown;
     private float xTouch,yTouch;
     private boolean touchDown;
+
+    private CustomButton pauseBtn;
+
 
 
 
@@ -69,8 +72,6 @@ public class Playing extends BaseState implements GameStateInterface {
 
 
 
-
-
         int[][] gameMapIds = new int[gameMapSizeY][gameMapSizeX];
 
         int value;
@@ -89,6 +90,7 @@ public class Playing extends BaseState implements GameStateInterface {
 
                 gameMapIds[i][j] = value;
             }
+
         }
 
 
@@ -103,7 +105,8 @@ public class Playing extends BaseState implements GameStateInterface {
 
 
 
-
+        //UI
+        pauseBtn = new CustomButton(5,5, ButtonImages.PLAYING_PAUSE.getWidth(), ButtonImages.PLAYING_PAUSE.getHeight(), ButtonImages.PLAYING_PAUSE.getScale());
 
 
     }
@@ -328,7 +331,15 @@ public class Playing extends BaseState implements GameStateInterface {
         c.drawBitmap(GameCharacters.SNAKE.getSprite(3, spriteIdX),snakePoints.get(snakePoints.size() - 1).getxPosition() - DRAWOFFSETX, snakePoints.get(snakePoints.size() - 1).getyPosition() - DRAWOFFSETY,null);
 
 
+        drawUI(c);
+
     }
+
+    private void drawUI(Canvas c){
+        c.drawBitmap(ButtonImages.PLAYING_PAUSE.getBtnImg(pauseBtn.isPushed()),
+                pauseBtn.getHitbox().left, pauseBtn.getHitbox().top, null);
+    }
+
 
 
     @Override
@@ -336,30 +347,23 @@ public class Playing extends BaseState implements GameStateInterface {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
 
-                xCenter = event.getX();
-                yCenter = event.getY();
+                if(isIn(event, pauseBtn))
+                    pauseBtn.setPushed(true);
 
-                float x = event.getX();
-                float y = event.getY();
 
-                float a = Math.abs(x - xCenter);
-                float b = Math.abs(y - yCenter);
-                float c = (float) Math.hypot(a,b);
 
-                if (c <= radius) {
-                    touchDown = true;
-                    xTouch = x;
-                    yTouch = y;
-                }
+                xTDown = event.getX();
+                yTDown = event.getY();
+
+                touchDown = true;
+
                 break;
             case MotionEvent.ACTION_MOVE:
                 if(touchDown){
                     int snakeMoveTo;
-                    xTouch = event.getX();
-                    yTouch = event.getY();
 
-                    float xDiff = xTouch - xCenter;
-                    float yDiff = yTouch - yCenter;
+                    float xDiff = event.getX() - xTDown;
+                    float yDiff = event.getY() - yTDown;
 
                     if (Math.abs(xDiff) >= Math.abs(yDiff)){
                         //Horizontal
@@ -386,6 +390,12 @@ public class Playing extends BaseState implements GameStateInterface {
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                if(isIn(event, pauseBtn))
+                    if(pauseBtn.isPushed())
+                        game.setCurrentGameState(Game.GameState.PAUSED);
+
+                pauseBtn.setPushed(false);
+
                 touchDown = false;
                 break;
         }
@@ -422,6 +432,8 @@ public class Playing extends BaseState implements GameStateInterface {
         this.snakeMoveTo = snakeMoveTo;
     }
 
-
+    private boolean isIn(MotionEvent e, CustomButton b){
+        return b.getHitbox().contains(e.getX(),e.getY());
+    }
 
 }

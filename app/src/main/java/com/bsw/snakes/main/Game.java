@@ -5,9 +5,13 @@ import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
+import com.bsw.snakes.gamestates.Credits;
 import com.bsw.snakes.gamestates.Death;
 import com.bsw.snakes.gamestates.Menu;
+import com.bsw.snakes.gamestates.Paused;
 import com.bsw.snakes.gamestates.Playing;
+import com.bsw.snakes.gamestates.Scores;
+import com.bsw.snakes.gamestates.Settings;
 import com.bsw.snakes.helpers.interfaces.GameStateInterface;
 
 public class Game {
@@ -17,7 +21,11 @@ public class Game {
     private GameLoop gameLoop;
 
     private Menu menu;
+    private Settings settings;
+    private Scores scores;
+    private Credits credits;
     private Playing playing;
+    private Paused paused;
     private Death death;
 
     private GameState currentGameState = GameState.MENU;
@@ -34,8 +42,20 @@ public class Game {
             case MENU:
                 menu.update(delta);
                 break;
+            case SETTINGS:
+                settings.update(delta);
+                break;
+            case SCORES:
+                scores.update(delta);
+                break;
+            case CREDITS:
+                credits.update(delta);
+                break;
             case PLAYING:
                 playing.update(delta);
+                break;
+            case PAUSED:
+                paused.update(delta);
                 break;
             case DEATH:
                 death.update(delta);
@@ -53,8 +73,20 @@ public class Game {
             case MENU:
                 menu.render(c);
                 break;
+            case SETTINGS:
+                settings.render(c);
+                break;
+            case SCORES:
+                scores.render(c);
+                break;
+            case CREDITS:
+                credits.render(c);
+                break;
             case PLAYING:
                 playing.render(c);
+                break;
+            case PAUSED:
+                paused.render(c);
                 break;
             case DEATH:
                 death.render(c);
@@ -67,7 +99,11 @@ public class Game {
 
     private void initGameStates() {
         menu = new Menu(this);
+        settings = new Settings(this);
+        scores = new Scores(this);
+        credits = new Credits(this);
         playing = new Playing(this);
+        paused = new Paused(this);
         death = new Death(this);
 
     }
@@ -77,8 +113,20 @@ public class Game {
             case MENU:
                 menu.touchEvents(event);
                 break;
+            case SETTINGS:
+                settings.touchEvents(event);
+                break;
+            case SCORES:
+                scores.touchEvents(event);
+                break;
+            case CREDITS:
+                credits.touchEvents(event);
+                break;
             case PLAYING:
                 playing.touchEvents(event);
+                break;
+            case PAUSED:
+                paused.touchEvents(event);
                 break;
             case DEATH:
                 death.touchEvents(event);
@@ -93,7 +141,7 @@ public class Game {
     }
 
     public enum GameState{
-        MENU, PLAYING, DEATH;
+        MENU, SETTINGS, SCORES, CREDITS, PLAYING, PAUSED, DEATH;
     }
 
     public GameState getCurrentGameState(){

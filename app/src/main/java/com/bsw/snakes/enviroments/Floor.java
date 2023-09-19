@@ -9,7 +9,7 @@ import com.bsw.snakes.helpers.interfaces.BitmapMethods;
 
 public enum Floor implements BitmapMethods {
 
-    OUTSIDE(R.drawable.tileset_floor,2,2);
+    OUTSIDE(R.drawable.tileset_floor,2,3);
 
     private final Bitmap[] sprites;
 
