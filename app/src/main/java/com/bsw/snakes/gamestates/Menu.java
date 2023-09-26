@@ -3,14 +3,8 @@ package com.bsw.snakes.gamestates;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.PointF;
 import android.graphics.RectF;
-import android.media.Image;
-import android.provider.ContactsContract;
 import android.view.MotionEvent;
-
-import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.bsw.snakes.enviroments.Floor;
 import com.bsw.snakes.helpers.GameConstants;
@@ -33,7 +27,7 @@ public class Menu extends BaseState implements GameStateInterface {
 
     private CustomButton startBtn, settingsBtn, starBtn, muteBtn, questionBtn;
 
-    private CustomSlider sliderSdr, chosenSdr, overSdr;
+    private CustomSlider widthSld, heightSld;
 
     private ArrayList<Clouds> clouds = new ArrayList<>();
     private CloudType cloudTypeRnd;
@@ -56,7 +50,8 @@ public class Menu extends BaseState implements GameStateInterface {
         questionBtn = new CustomButton(getSignPostLeft(9),getSignPostTop(53), ButtonImages.MENU_QUESTION.getWidth(), ButtonImages.MENU_QUESTION.getHeight(), ButtonImages.MENU_QUESTION.getScale());
 
 
-        sliderSdr = new CustomSlider(100,1800, SliderImages.SLIDER.getWidth(), SliderImages.SLIDER.getHeight(), SliderImages.SLIDER.getScale());
+        widthSld = new CustomSlider(GameConstants.GAME_WIDTH/21,GameConstants.GAME_HEIGHT* 15/20, SliderImages.SLIDER.getWidth(), SliderImages.SLIDER.getHeight(), SliderImages.SLIDER.getScale());
+        heightSld = new CustomSlider(GameConstants.GAME_WIDTH/21,GameConstants.GAME_HEIGHT* 17/20, SliderImages.SLIDER.getWidth(), SliderImages.SLIDER.getHeight(), SliderImages.SLIDER.getScale());
 
 
         for (int i = 0; i <= 7; i++) {
@@ -141,8 +136,13 @@ public class Menu extends BaseState implements GameStateInterface {
         c.drawBitmap(Images.SIGNPOST.getImg(),GameConstants.GAME_WIDTH / 16,GameConstants.GAME_HEIGHT * 2 / 3 - Images.SIGNPOST.getHeight() * Images.SIGNPOST.getScale(), null);
 
 
-        c.drawBitmap(SliderImages.SLIDER.getSliderImg(sliderSdr.getValue()),
-                sliderSdr.getHitbox().left,sliderSdr.getHitbox().top, null);
+        c.drawBitmap(SliderImages.SLIDER.getSliderImg(widthSld.getValue()),
+                widthSld.getHitbox().left, widthSld.getHitbox().top, null);
+
+        c.drawBitmap(SliderImages.SLIDER.getSliderImg(heightSld.getValue()),
+                heightSld.getHitbox().left, heightSld.getHitbox().top, null);
+
+
 
 
         c.drawBitmap(ButtonImages.MENU_START.getBtnImg(startBtn.isPushed()),
@@ -181,8 +181,11 @@ public class Menu extends BaseState implements GameStateInterface {
             if (isIn(event, questionBtn.getHitbox()))
                 questionBtn.setPushed(true);
 
-            if (isIn(event, sliderSdr.getHitbox())){
-                sliderSdr.setPushed(true);
+            if (isIn(event, widthSld.getHitbox())){
+                widthSld.setPushed(true);
+            }
+            if (isIn(event, heightSld.getHitbox())){
+                heightSld.setPushed(true);
             }
 
 
@@ -206,10 +209,17 @@ public class Menu extends BaseState implements GameStateInterface {
             settingsBtn.setPushed(false);
             starBtn.setPushed(false);
             questionBtn.setPushed(false);
+
+            widthSld.setPushed(false);
+            heightSld.setPushed(false);
+
         } else if (event.getAction() == MotionEvent.ACTION_MOVE){
 
-            if(sliderSdr.isPushed()){
-                sliderSdr.setTouchEventValue(event.getX());
+            if(widthSld.isPushed()){
+                widthSld.setTouchEventValue(event.getX());
+            }
+            if(heightSld.isPushed()){
+                heightSld.setTouchEventValue(event.getX());
             }
 
 

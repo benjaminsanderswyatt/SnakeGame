@@ -3,6 +3,7 @@ package com.bsw.snakes.ui;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -14,7 +15,7 @@ import com.bsw.snakes.main.MainActivity;
 
 public enum SliderImages implements BitmapMethods {
 
-    SLIDER(R.drawable.slider_all, 61,7, 15);
+    SLIDER(R.drawable.slider, 61,7, 15);
 
     private int sliderWidth, height, scale;
     private Bitmap slider;
@@ -48,45 +49,31 @@ public enum SliderImages implements BitmapMethods {
         return scale;
     }
 
-    //public Bitmap getSliderImg(){return slider;}
-    //^ return the overlayed bitmap image of the slider chosen and over after its value gotten
-
 
     public Bitmap getSliderImg(int value){
-        //BITMAPS slider, over, chosen
 
-        int sliderWidth = slider.getWidth();
-        int sliderHeight = slider.getHeight();
-
-
-
-        Bitmap finalBitmap = Bitmap.createBitmap(sliderWidth+ 3*scale, sliderHeight, slider.getConfig());
+        Bitmap finalBitmap = Bitmap.createBitmap(slider.getWidth()+ 3*scale, slider.getHeight(), slider.getConfig());
 
         Canvas canvas = new Canvas(finalBitmap);
 
-        canvas.drawBitmap(slider,null,new RectF((float)(1.5 * scale),0,sliderWidth+(float)(1.5 * scale),sliderHeight),null);
+        canvas.drawBitmap(slider,null,new RectF((float)(1.5 * scale),0,slider.getWidth()+(float)(1.5 * scale),slider.getHeight()),null);
 
 
         Paint paint = new Paint();
+        //paint.setColor(0xC0366AB3);
         paint.setColor(0xC0366AB3);
 
 
-        canvas.drawRect((float)(1.5 * scale),(float)(height * 3/7 * scale),(float)((value * 3 + 1.5)*scale),(float)(height * 4/7 * scale),paint);
-        //3/7 & 4/7 are the pixel location on the slider(which has a height of 7) e.g. top is 3 pixels down bottom is 4
+        canvas.drawRect((float)(1.5 * scale),(float)(3 * scale),(float)((value * 3 + 1.5)*scale),(float)(4 * scale),paint);
+
 
         paint.setColor(0xFF4674AF);
-
-        float marginleft = (float) ((value * 3* scale) +(0.5*scale)+(float)(1.5 * scale));
-        float margintop = (float) (height * 0.5 * scale);
-
-        canvas.drawCircle(marginleft,margintop,(float)(1.5 * scale),paint);
+        canvas.drawCircle((float)((value * 3 + 0.5+1.5)*scale),(float)(height * 0.5 * scale),(float)(1.5 * scale),paint);
 
         paint.setColor(0xFF274C7F);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth((float)(0.4*scale));
-        canvas.drawCircle(marginleft,margintop,(float)(1.5 * scale),paint);
-
-
+        canvas.drawCircle((float)((value * 3 + 0.5+1.5)*scale),(float)(height * 0.5 * scale),(float)(1.5 * scale),paint);
 
         return finalBitmap;
     }
