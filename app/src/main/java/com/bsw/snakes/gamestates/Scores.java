@@ -24,6 +24,8 @@ public class Scores extends BaseState implements GameStateInterface {
 
     private CustomButton menuBtn;
 
+
+
     public Scores(Game game){
         super(game);
         paint = new Paint();

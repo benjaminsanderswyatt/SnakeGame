@@ -2,8 +2,6 @@ package com.bsw.snakes.ui;
 
 import android.graphics.RectF;
 
-import com.bsw.snakes.helpers.GameConstants;
-
 public class CustomButton{
 
     private RectF hitbox;
