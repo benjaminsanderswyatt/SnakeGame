@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 
 import com.bsw.snakes.enviroments.Floor;
 import com.bsw.snakes.helpers.GameConstants;
+import com.bsw.snakes.helpers.GameSettings;
 import com.bsw.snakes.helpers.interfaces.GameStateInterface;
 import com.bsw.snakes.main.Game;
 import com.bsw.snakes.ui.ButtonImages;
@@ -17,6 +18,7 @@ import com.bsw.snakes.ui.CustomButton;
 import com.bsw.snakes.ui.CustomSlider;
 import com.bsw.snakes.ui.Images;
 import com.bsw.snakes.ui.SliderImages;
+import com.bsw.snakes.ui.TextImages;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -50,8 +52,8 @@ public class Menu extends BaseState implements GameStateInterface {
         questionBtn = new CustomButton(getSignPostLeft(9),getSignPostTop(53), ButtonImages.MENU_QUESTION.getWidth(), ButtonImages.MENU_QUESTION.getHeight(), ButtonImages.MENU_QUESTION.getScale());
 
 
-        widthSld = new CustomSlider(GameConstants.GAME_WIDTH/21,GameConstants.GAME_HEIGHT* 15/20, SliderImages.SLIDER.getWidth(), SliderImages.SLIDER.getHeight(), SliderImages.SLIDER.getScale());
-        heightSld = new CustomSlider(GameConstants.GAME_WIDTH/21,GameConstants.GAME_HEIGHT* 17/20, SliderImages.SLIDER.getWidth(), SliderImages.SLIDER.getHeight(), SliderImages.SLIDER.getScale());
+        widthSld = new CustomSlider(GameConstants.GAME_WIDTH /21,GameConstants.GAME_HEIGHT* 15/20, SliderImages.SLIDER.getWidth(), SliderImages.SLIDER.getHeight(), SliderImages.SLIDER.getScale());
+        heightSld = new CustomSlider(GameConstants.GAME_WIDTH /21,GameConstants.GAME_HEIGHT* 18/20, SliderImages.SLIDER.getWidth(), SliderImages.SLIDER.getHeight(), SliderImages.SLIDER.getScale());
 
 
         for (int i = 0; i <= 7; i++) {
@@ -99,7 +101,7 @@ public class Menu extends BaseState implements GameStateInterface {
 
         c.drawColor(0xFF7FC9FF);
 
-        //render clouds
+        //CLOUDS
         for(Clouds element : clouds){
             switch (element.getCloudType()){
                 case CLOUD1:
@@ -117,9 +119,8 @@ public class Menu extends BaseState implements GameStateInterface {
             }
         }
 
-
+        //SIGN
         c.drawBitmap(Images.SIGN.getImg(),(GameConstants.GAME_WIDTH - Images.SIGN.getWidth() * Images.SIGN.getScale()) / 2, 0, null);
-
 
         c.drawBitmap(Images.SIGN.getImg(),(GameConstants.GAME_WIDTH - Images.SIGN.getWidth() * Images.SIGN.getScale()) / 2, 0, null);
 
@@ -136,15 +137,32 @@ public class Menu extends BaseState implements GameStateInterface {
         c.drawBitmap(Images.SIGNPOST.getImg(),GameConstants.GAME_WIDTH / 16,GameConstants.GAME_HEIGHT * 2 / 3 - Images.SIGNPOST.getHeight() * Images.SIGNPOST.getScale(), null);
 
 
+
+
+        //WIDTH SLIDER
         c.drawBitmap(SliderImages.SLIDER.getSliderImg(widthSld.getValue()),
                 widthSld.getHitbox().left, widthSld.getHitbox().top, null);
 
+        c.drawBitmap(Images.WIDTH.getImg(),GameConstants.GAME_WIDTH /21,GameConstants.GAME_HEIGHT* 14/20, null);
+
+        char[] digitsW = String.valueOf(widthSld.getValue() + 5).toCharArray();
+        for (int i = 0; i < digitsW.length; i++){
+            c.drawBitmap(TextImages.NUMBERS.getTextImg(Character.getNumericValue(digitsW[i])),GameConstants.GAME_WIDTH /21 + Images.WIDTH.getWidth()* Images.WIDTH.getScale() + i * TextImages.NUMBERS.getWidth() * TextImages.NUMBERS.getScale() * 4/3, GameConstants.GAME_HEIGHT* 14/20, null);
+        }
+
+        //HEIGHT SLIDER
         c.drawBitmap(SliderImages.SLIDER.getSliderImg(heightSld.getValue()),
                 heightSld.getHitbox().left, heightSld.getHitbox().top, null);
 
+        c.drawBitmap(Images.HEIGHT.getImg(),GameConstants.GAME_WIDTH /21,GameConstants.GAME_HEIGHT* 17/20, null);
+
+        char[] digitsH = String.valueOf(heightSld.getValue() + 5).toCharArray();
+        for (int i = 0; i < digitsH.length; i++){
+            c.drawBitmap(TextImages.NUMBERS.getTextImg(Character.getNumericValue(digitsH[i])),GameConstants.GAME_HEIGHT/21 + Images.HEIGHT.getWidth()* Images.HEIGHT.getScale() + i * TextImages.NUMBERS.getWidth() * TextImages.NUMBERS.getScale() * 4/3, GameConstants.GAME_HEIGHT* 17/20, null);
+        }
 
 
-
+        //BUTTONS
         c.drawBitmap(ButtonImages.MENU_START.getBtnImg(startBtn.isPushed()),
                 startBtn.getHitbox().left, startBtn.getHitbox().top, null);
 
@@ -159,6 +177,8 @@ public class Menu extends BaseState implements GameStateInterface {
 
         c.drawBitmap(ButtonImages.MENU_QUESTION.getBtnImg(questionBtn.isPushed()),
                 questionBtn.getHitbox().left, questionBtn.getHitbox().top, null);
+
+
 
     }
 
@@ -193,8 +213,11 @@ public class Menu extends BaseState implements GameStateInterface {
 
         } else if(event.getAction() == MotionEvent.ACTION_UP){
             if(isIn(event, startBtn.getHitbox()))
-                if(startBtn.isPushed())
+                if(startBtn.isPushed()) {
+                    GameSettings.GAME_X_SIZE = widthSld.getValue() + 5;
+                    GameSettings.GAME_Y_SIZE = heightSld.getValue() + 5;
                     game.setCurrentGameState(Game.GameState.PLAYING);
+                }
             if(isIn(event, settingsBtn.getHitbox()))
                 if(settingsBtn.isPushed())
                     game.setCurrentGameState(Game.GameState.SETTINGS);

@@ -9,6 +9,7 @@ import com.bsw.snakes.entities.GameCharacters;
 import com.bsw.snakes.entities.SnakePoints;
 import com.bsw.snakes.enviroments.GameMap;
 import com.bsw.snakes.helpers.GameConstants;
+import com.bsw.snakes.helpers.GameSettings;
 import com.bsw.snakes.helpers.interfaces.GameStateInterface;
 import com.bsw.snakes.main.Game;
 import com.bsw.snakes.ui.ButtonImages;
@@ -22,14 +23,15 @@ public class Playing extends BaseState implements GameStateInterface {
 
     //Uses the formula   Math.Ciel( GAMEWIDTH / BITSCALER ) = sizeOfMapX   to get the number of tiles in its respective orientation
     //then does    ( ( sizeOfMapX * BITSCALER ) - GAMEWIDTH ) / 2 = OffsetX     to get the offset required for the canvas to centre on the screen
-    float DRAWOFFSETX = ((((int) Math.ceil(GameConstants.GAME_WIDTH/(GameConstants.BITSCALER))) * GameConstants.BITSCALER) - GameConstants.GAME_WIDTH) / 2;
+    float DRAWOFFSETX = ((((int) Math.ceil(GameConstants.GAME_WIDTH /(GameConstants.BITSCALER))) * GameConstants.BITSCALER) - GameConstants.GAME_WIDTH) / 2;
     float DRAWOFFSETY = ((((int) Math.ceil(GameConstants.GAME_HEIGHT/(GameConstants.BITSCALER))) * GameConstants.BITSCALER) - GameConstants.GAME_HEIGHT) / 2;
 
     public List<SnakePoints> snakePoints = new ArrayList<>();
 
-    private int gameMapSizeX, gameMapSizeY;
     private int snakeStartSize;
     private PointF startPosition = new PointF();
+
+    private int gameMapSizeX, gameMapSizeY;
 
     private final PointF fruitPos = new PointF(); //Pos set to 0 0 as gameloop does checkFruitEaten
     private int fruitType = 0;
@@ -57,7 +59,7 @@ public class Playing extends BaseState implements GameStateInterface {
         //Map Size. This includes the walls (so playable area is -2 to each)
         //gameMapSizeX = 12;
         //gameMapSizeY = 16;
-        gameMapSizeX = (int) Math.ceil(GameConstants.GAME_WIDTH/(GameConstants.BITSCALER));
+        gameMapSizeX = (int) Math.ceil(GameConstants.GAME_WIDTH /(GameConstants.BITSCALER));
         gameMapSizeY = (int) Math.ceil(GameConstants.GAME_HEIGHT/(GameConstants.BITSCALER));
 
 

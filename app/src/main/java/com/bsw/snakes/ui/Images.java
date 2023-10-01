@@ -12,7 +12,9 @@ public enum Images implements BitmapMethods {
 
     SIGN(R.drawable.snake_sign,52,32, 16),
     GAME_PLAY_SAMPLE(R.drawable.game_play_sample,144,96, 6),
-    SIGNPOST(R.drawable.sign_post,78,101, 10);
+    SIGNPOST(R.drawable.sign_post,78,101, 10),
+    HEIGHT(R.drawable.height,24,7,10),
+    WIDTH(R.drawable.width,22,7,10);
 
     private int width,height, scale;
     private Bitmap image;

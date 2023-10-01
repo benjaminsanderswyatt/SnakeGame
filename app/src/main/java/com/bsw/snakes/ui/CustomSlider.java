@@ -2,9 +2,12 @@ package com.bsw.snakes.ui;
 
 import android.graphics.RectF;
 
+import com.bsw.snakes.helpers.GameConstants;
+import com.bsw.snakes.helpers.GameSettings;
+
 public class CustomSlider {
 
-    private int value = 12;
+    private int value = 12; //True value is + 5
     private int numOfSections = 21;
     private RectF hitbox;
 

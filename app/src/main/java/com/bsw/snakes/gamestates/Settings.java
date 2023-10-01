@@ -7,16 +7,12 @@ import android.view.MotionEvent;
 
 import com.bsw.snakes.enviroments.Floor;
 import com.bsw.snakes.helpers.GameConstants;
+import com.bsw.snakes.helpers.GameSettings;
 import com.bsw.snakes.helpers.interfaces.GameStateInterface;
 import com.bsw.snakes.main.Game;
 import com.bsw.snakes.ui.ButtonImages;
-import com.bsw.snakes.ui.CloudType;
-import com.bsw.snakes.ui.Clouds;
 import com.bsw.snakes.ui.CustomButton;
 import com.bsw.snakes.ui.Images;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 public class Settings extends BaseState implements GameStateInterface {
 

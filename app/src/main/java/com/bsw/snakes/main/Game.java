@@ -12,7 +12,6 @@ import com.bsw.snakes.gamestates.Paused;
 import com.bsw.snakes.gamestates.Playing;
 import com.bsw.snakes.gamestates.Scores;
 import com.bsw.snakes.gamestates.Settings;
-import com.bsw.snakes.helpers.interfaces.GameStateInterface;
 
 public class Game {
 
@@ -139,6 +138,13 @@ public class Game {
     public void startGameLoop() {
         gameLoop.startGameLoop();
     }
+
+    public void GameSettings(){
+
+    }
+
+
+
 
     public enum GameState{
         MENU, SETTINGS, SCORES, CREDITS, PLAYING, PAUSED, DEATH;
