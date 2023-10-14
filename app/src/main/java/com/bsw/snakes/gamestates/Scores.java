@@ -52,9 +52,9 @@ public class Scores extends BaseState implements GameStateInterface {
         for (int j = 0; j <= GameConstants.GAME_HEIGHT * 9 / 10; j += size)
             for (int i = 0; i <= GameConstants.GAME_WIDTH; i += size) {
                 if (j == 0) {
-                    c.drawBitmap(Floor.OUTSIDE.getSprites(5), i, GameConstants.GAME_HEIGHT * 1 / 10 + j, null);
+                    c.drawBitmap(Floor.OUTSIDE.getSprites(5, 5), i, GameConstants.GAME_HEIGHT * 1 / 10 + j, null);
                 } else {
-                    c.drawBitmap(Floor.OUTSIDE.getSprites(4), i, GameConstants.GAME_HEIGHT * 1 / 10 + j, null);
+                    c.drawBitmap(Floor.OUTSIDE.getSprites(4, 5), i, GameConstants.GAME_HEIGHT * 1 / 10 + j, null);
                 }
             }
 

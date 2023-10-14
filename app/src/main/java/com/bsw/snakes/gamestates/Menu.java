@@ -8,17 +8,13 @@ import android.view.MotionEvent;
 
 import com.bsw.snakes.enviroments.Floor;
 import com.bsw.snakes.helpers.GameConstants;
-import com.bsw.snakes.helpers.GameSettings;
 import com.bsw.snakes.helpers.interfaces.GameStateInterface;
 import com.bsw.snakes.main.Game;
 import com.bsw.snakes.ui.ButtonImages;
 import com.bsw.snakes.ui.CloudType;
 import com.bsw.snakes.ui.Clouds;
 import com.bsw.snakes.ui.CustomButton;
-import com.bsw.snakes.ui.CustomSlider;
 import com.bsw.snakes.ui.Images;
-import com.bsw.snakes.ui.SliderImages;
-import com.bsw.snakes.ui.TextImages;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -29,7 +25,7 @@ public class Menu extends BaseState implements GameStateInterface {
 
     private CustomButton startBtn, settingsBtn, starBtn, muteBtn, questionBtn;
 
-    private CustomSlider widthSld, heightSld;
+
 
     private ArrayList<Clouds> clouds = new ArrayList<>();
     private CloudType cloudTypeRnd;
@@ -52,8 +48,6 @@ public class Menu extends BaseState implements GameStateInterface {
         questionBtn = new CustomButton(getSignPostLeft(9),getSignPostTop(53), ButtonImages.MENU_QUESTION.getWidth(), ButtonImages.MENU_QUESTION.getHeight(), ButtonImages.MENU_QUESTION.getScale());
 
 
-        widthSld = new CustomSlider(GameConstants.GAME_WIDTH /21,GameConstants.GAME_HEIGHT* 15/20, SliderImages.SLIDER.getWidth(), SliderImages.SLIDER.getHeight(), SliderImages.SLIDER.getScale());
-        heightSld = new CustomSlider(GameConstants.GAME_WIDTH /21,GameConstants.GAME_HEIGHT* 18/20, SliderImages.SLIDER.getWidth(), SliderImages.SLIDER.getHeight(), SliderImages.SLIDER.getScale());
 
 
         for (int i = 0; i <= 7; i++) {
@@ -77,6 +71,7 @@ public class Menu extends BaseState implements GameStateInterface {
     @Override
     public void update(double delta) {
 
+        //MOVE CLOUDS
         for(Clouds element : clouds){
             element.setX(element.getX() + element.getSpeed());
 
@@ -124,42 +119,20 @@ public class Menu extends BaseState implements GameStateInterface {
 
         c.drawBitmap(Images.SIGN.getImg(),(GameConstants.GAME_WIDTH - Images.SIGN.getWidth() * Images.SIGN.getScale()) / 2, 0, null);
 
+
+        //FLOOR
         for (int j = 0; j <= GameConstants.GAME_HEIGHT / 3; j += GameConstants.BITSCALER)
             for (int i = 0; i <= GameConstants.GAME_WIDTH; i += GameConstants.BITSCALER) {
                 if (j == 0) {
-                    c.drawBitmap(Floor.OUTSIDE.getSprites(5), i, GameConstants.GAME_HEIGHT * 2 / 3 + j, null);
+                    c.drawBitmap(Floor.OUTSIDE.getSprites(5, 5), i, GameConstants.GAME_HEIGHT * 2 / 3 + j, null);
                 } else {
-                    c.drawBitmap(Floor.OUTSIDE.getSprites(4), i, GameConstants.GAME_HEIGHT * 2 / 3 + j, null);
+                    c.drawBitmap(Floor.OUTSIDE.getSprites(4, 5), i, GameConstants.GAME_HEIGHT * 2 / 3 + j, null);
                 }
             }
 
-
+        //SIGNPOST
         c.drawBitmap(Images.SIGNPOST.getImg(),GameConstants.GAME_WIDTH / 16,GameConstants.GAME_HEIGHT * 2 / 3 - Images.SIGNPOST.getHeight() * Images.SIGNPOST.getScale(), null);
 
-
-
-
-        //WIDTH SLIDER
-        c.drawBitmap(SliderImages.SLIDER.getSliderImg(widthSld.getValue()),
-                widthSld.getHitbox().left, widthSld.getHitbox().top, null);
-
-        c.drawBitmap(Images.WIDTH.getImg(),GameConstants.GAME_WIDTH /21,GameConstants.GAME_HEIGHT* 14/20, null);
-
-        char[] digitsW = String.valueOf(widthSld.getValue() + 5).toCharArray();
-        for (int i = 0; i < digitsW.length; i++){
-            c.drawBitmap(TextImages.NUMBERS.getTextImg(Character.getNumericValue(digitsW[i])),GameConstants.GAME_WIDTH /21 + Images.WIDTH.getWidth()* Images.WIDTH.getScale() + i * TextImages.NUMBERS.getWidth() * TextImages.NUMBERS.getScale() * 4/3, GameConstants.GAME_HEIGHT* 14/20, null);
-        }
-
-        //HEIGHT SLIDER
-        c.drawBitmap(SliderImages.SLIDER.getSliderImg(heightSld.getValue()),
-                heightSld.getHitbox().left, heightSld.getHitbox().top, null);
-
-        c.drawBitmap(Images.HEIGHT.getImg(),GameConstants.GAME_WIDTH /21,GameConstants.GAME_HEIGHT* 17/20, null);
-
-        char[] digitsH = String.valueOf(heightSld.getValue() + 5).toCharArray();
-        for (int i = 0; i < digitsH.length; i++){
-            c.drawBitmap(TextImages.NUMBERS.getTextImg(Character.getNumericValue(digitsH[i])),GameConstants.GAME_HEIGHT/21 + Images.HEIGHT.getWidth()* Images.HEIGHT.getScale() + i * TextImages.NUMBERS.getWidth() * TextImages.NUMBERS.getScale() * 4/3, GameConstants.GAME_HEIGHT* 17/20, null);
-        }
 
 
         //BUTTONS
@@ -195,18 +168,15 @@ public class Menu extends BaseState implements GameStateInterface {
             if (isIn(event, muteBtn.getHitbox()))
                 if (muteBtn.isPushed()){
                     muteBtn.setPushed(false);
+                    game.setMuted(false);
                 } else {
                     muteBtn.setPushed(true);
+                    game.setMuted(true);
                 }
             if (isIn(event, questionBtn.getHitbox()))
                 questionBtn.setPushed(true);
 
-            if (isIn(event, widthSld.getHitbox())){
-                widthSld.setPushed(true);
-            }
-            if (isIn(event, heightSld.getHitbox())){
-                heightSld.setPushed(true);
-            }
+
 
 
 
@@ -214,8 +184,6 @@ public class Menu extends BaseState implements GameStateInterface {
         } else if(event.getAction() == MotionEvent.ACTION_UP){
             if(isIn(event, startBtn.getHitbox()))
                 if(startBtn.isPushed()) {
-                    GameSettings.GAME_X_SIZE = widthSld.getValue() + 5;
-                    GameSettings.GAME_Y_SIZE = heightSld.getValue() + 5;
                     game.setCurrentGameState(Game.GameState.PLAYING);
                 }
             if(isIn(event, settingsBtn.getHitbox()))
@@ -232,20 +200,6 @@ public class Menu extends BaseState implements GameStateInterface {
             settingsBtn.setPushed(false);
             starBtn.setPushed(false);
             questionBtn.setPushed(false);
-
-            widthSld.setPushed(false);
-            heightSld.setPushed(false);
-
-        } else if (event.getAction() == MotionEvent.ACTION_MOVE){
-
-            if(widthSld.isPushed()){
-                widthSld.setTouchEventValue(event.getX());
-            }
-            if(heightSld.isPushed()){
-                heightSld.setTouchEventValue(event.getX());
-            }
-
-
 
 
 

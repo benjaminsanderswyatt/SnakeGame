@@ -13,7 +13,7 @@ import com.bsw.snakes.gamestates.Playing;
 import com.bsw.snakes.gamestates.Scores;
 import com.bsw.snakes.gamestates.Settings;
 
-public class Game {
+public class Game extends GameSettings{
 
     private SurfaceHolder holder;
 
@@ -101,7 +101,7 @@ public class Game {
         settings = new Settings(this);
         scores = new Scores(this);
         credits = new Credits(this);
-        playing = new Playing(this);
+        //playing = new Playing(this); //playing gets initialized in setCurrentGameState. meaning directly before starting the game
         paused = new Paused(this);
         death = new Death(this);
 
@@ -139,11 +139,6 @@ public class Game {
         gameLoop.startGameLoop();
     }
 
-    public void GameSettings(){
-
-    }
-
-
 
 
     public enum GameState{
@@ -155,6 +150,9 @@ public class Game {
     }
 
     public void setCurrentGameState(GameState currentGameState){
+        if (currentGameState == GameState.PLAYING){ //when the game starts playing initialise the values
+            playing = new Playing(this);
+        }
         this.currentGameState = currentGameState;
     }
 }

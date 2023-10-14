@@ -2,6 +2,11 @@ package com.bsw.snakes.ui;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 
 import com.bsw.snakes.R;
 import com.bsw.snakes.helpers.interfaces.BitmapMethods;
@@ -47,5 +52,23 @@ public enum CloudType implements BitmapMethods {
     public Bitmap getImg(){
         return image;
     }
+
+    public Bitmap getTintedImg(){
+
+        Bitmap finalBitmap = Bitmap.createBitmap(image.getWidth()+ 3*scale, image.getHeight(), image.getConfig());
+
+        Canvas canvas = new Canvas(finalBitmap);
+
+        Paint paint = new Paint();
+        //paint.setColorFilter(new PorterDuffColorFilter(0xAF404040, PorterDuff.Mode.SRC_IN));
+        ColorFilter filter = new LightingColorFilter(0xBF404040, 0x00000000);
+        paint.setColorFilter(filter);
+
+        canvas.drawBitmap(image,new Matrix(),paint);
+
+
+
+        return finalBitmap;
+        }
 
 }

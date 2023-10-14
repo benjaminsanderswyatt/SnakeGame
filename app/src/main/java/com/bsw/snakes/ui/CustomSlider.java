@@ -2,12 +2,10 @@ package com.bsw.snakes.ui;
 
 import android.graphics.RectF;
 
-import com.bsw.snakes.helpers.GameConstants;
-import com.bsw.snakes.helpers.GameSettings;
-
 public class CustomSlider {
 
-    private int value = 12; //True value is + 5
+    private int value = 3; //True value is + 5
+    //private int minValue = 0;
     private int numOfSections = 21;
     private RectF hitbox;
 
@@ -22,13 +20,13 @@ public class CustomSlider {
         return hitbox;
     }
 
-    public int getValue(){
-        return value;
-    }
+    //public int getMinValue(){
+    //    return minValue;
+    //}
 
-    public void setValue(int value){
-        this.value = value;
-    }
+    //public void setMinValue(int minValue){
+    //    this.minValue = minValue;
+    //}
 
     public boolean isPushed(){
         return pushed;
@@ -39,7 +37,7 @@ public class CustomSlider {
     }
 
 
-    public void setTouchEventValue(float touchX){
+    public int setTouchEventValue(float touchX){
         float posInSlider = touchX - hitbox.left;
         boolean found = false;
 
@@ -50,6 +48,7 @@ public class CustomSlider {
                 value = i;
             }
         }
+        return value;
     }
 
 }

@@ -3,15 +3,12 @@ package com.bsw.snakes.helpers.interfaces;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.bsw.snakes.helpers.GameConstants;
-
 public interface BitmapMethods {
 
     BitmapFactory.Options options = new BitmapFactory.Options();
 
-
-    default Bitmap getScaledBitmap(Bitmap bitmap){
-        return Bitmap.createScaledBitmap(bitmap,(int) (bitmap.getWidth() * GameConstants.SCALER), (int) (bitmap.getHeight() * GameConstants.SCALER), false);
+    default Bitmap getScaledBitmap(Bitmap bitmap, float scale){
+        return Bitmap.createScaledBitmap(bitmap,(int) (bitmap.getWidth() * scale), (int) (bitmap.getHeight() * scale), false);
     }
 
 }

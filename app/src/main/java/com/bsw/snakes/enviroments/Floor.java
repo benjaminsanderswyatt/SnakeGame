@@ -3,9 +3,9 @@ package com.bsw.snakes.enviroments;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.bsw.snakes.main.MainActivity;
 import com.bsw.snakes.R;
 import com.bsw.snakes.helpers.interfaces.BitmapMethods;
+import com.bsw.snakes.main.MainActivity;
 
 public enum Floor implements BitmapMethods {
 
@@ -20,13 +20,13 @@ public enum Floor implements BitmapMethods {
         for(int j = 0; j < tilesInHeight; j++)
             for(int i = 0; i < tilesInWidth; i++){
                 int index = j * tilesInWidth + i;
-                sprites[index] = getScaledBitmap(Bitmap.createBitmap(spriteSheet,16 * i,16 * j,16,16));
+                sprites[index] = Bitmap.createBitmap(spriteSheet,16 * i,16 * j,16,16);
             }
 
     }
 
-    public Bitmap getSprites(int id){
-        return sprites[id];
+    public Bitmap getSprites(int id, float scale){
+        return getScaledBitmap(sprites[id], scale);
     }
 
 

@@ -16,7 +16,11 @@ public enum ButtonImages implements BitmapMethods {
     MENU_QUESTION(R.drawable.question_btn, 14,14, 10),
 
 
+    RESTART(R.drawable.restart_btn, 32,14, 10),
+
+
     BACK_TO_MENU(R.drawable.menu_btn, 14,14, 10),
+    BACK_TO_MENU_TEXT(R.drawable.menu_text_btn, 23,14, 10),
 
 
 

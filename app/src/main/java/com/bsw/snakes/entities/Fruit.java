@@ -3,9 +3,9 @@ package com.bsw.snakes.entities;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.bsw.snakes.main.MainActivity;
 import com.bsw.snakes.R;
 import com.bsw.snakes.helpers.interfaces.BitmapMethods;
+import com.bsw.snakes.main.MainActivity;
 
 public enum Fruit implements BitmapMethods {
 
@@ -21,7 +21,7 @@ public enum Fruit implements BitmapMethods {
         spriteSheet = BitmapFactory.decodeResource(MainActivity.getGameContext().getResources(),resID, options);
 
         for(int i = 0; i < sprites.length; i++)
-            sprites[i] = getScaledBitmap(Bitmap.createBitmap(spriteSheet,16*i,0,16,16));
+            sprites[i] = Bitmap.createBitmap(spriteSheet,16*i,0,16,16);
 
     }
 
@@ -29,9 +29,8 @@ public enum Fruit implements BitmapMethods {
         return spriteSheet;
     }
 
-
-    public Bitmap getSprite(int xPos){
-        return sprites[xPos];
+    public Bitmap getSprite(int xPos, float scale){
+        return getScaledBitmap(sprites[xPos], scale);
     }
 
 }
