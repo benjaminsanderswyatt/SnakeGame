@@ -25,14 +25,10 @@ public class Menu extends BaseState implements GameStateInterface {
 
     private CustomButton startBtn, settingsBtn, starBtn, muteBtn, questionBtn;
 
-
-
     private ArrayList<Clouds> clouds = new ArrayList<>();
     private CloudType cloudTypeRnd;
 
     private Random rnd = new Random();
-    //int rnd = random.nextInt(max–min) + min;
-
 
     public Menu(Game game){
         super(game);

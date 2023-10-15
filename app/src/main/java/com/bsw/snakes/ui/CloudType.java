@@ -60,7 +60,6 @@ public enum CloudType implements BitmapMethods {
         Canvas canvas = new Canvas(finalBitmap);
 
         Paint paint = new Paint();
-        //paint.setColorFilter(new PorterDuffColorFilter(0xAF404040, PorterDuff.Mode.SRC_IN));
         ColorFilter filter = new LightingColorFilter(0xBF404040, 0x00000000);
         paint.setColorFilter(filter);
 
@@ -69,6 +68,6 @@ public enum CloudType implements BitmapMethods {
 
 
         return finalBitmap;
-        }
+    }
 
 }

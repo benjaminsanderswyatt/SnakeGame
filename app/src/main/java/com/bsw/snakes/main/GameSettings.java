@@ -9,17 +9,23 @@ public class GameSettings {
     private int gameSizeX = 10; //gamesize not including walls
     private int gameSizeY = 10; //gamesize not including walls
 
-    private int gameSpeed = 1; //snake moves every 1 / gamespeed seconds
+    private int gameSpeed = 2; //snake moves every 1 / gamespeed seconds
     private int startingLength = 3;
     private int numOfFruit = 1;
+
+    private int gameScore = 0;
+
+    public void setGameScore(int gameScore){this.gameScore = gameScore;}
+
+    public int getGameScore(){return gameScore;}
 
 
     public float getScaler(){
 
-        //GameConstants.GAME_WIDTH / ((gameSizeX + 2f) * 16);
-        //round down to the nearest 1/8th so that sprites load correctly
-        float scaleX = (float)(Math.floor(GameConstants.GAME_WIDTH / ((gameSizeX + 2f) * 16) * 8) / 8f);
-        float scaleY = (float)(Math.floor(GameConstants.GAME_HEIGHT / ((gameSizeY + 2f) * 16) * 8) / 8f);
+        //(gameSizeX + 1f) gives half a wall on each side;
+        //scale round down to the nearest 1/8th so that sprites load correctly
+        float scaleX = (float)(Math.floor(GameConstants.GAME_WIDTH / ((gameSizeX + 1f) * 16) * 8) / 8f);
+        float scaleY = (float)(Math.floor(GameConstants.GAME_HEIGHT / ((gameSizeY + 1f) * 16) * 8) / 8f);
 
         return Math.min(scaleX, scaleY); //when sizex is small & sizey is big have to scale for height
     }

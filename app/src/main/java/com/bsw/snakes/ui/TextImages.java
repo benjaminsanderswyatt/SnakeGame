@@ -12,12 +12,13 @@ public enum TextImages implements BitmapMethods {
 
     NUMBERS(R.drawable.numbers,3,6,10,10);
 
-    private int width, scale;
+    private int width, height, scale;
     private Bitmap[] textImages;
 
     TextImages(int resID, int width, int height,int number, int scale) {
         options.inScaled = false;
         this.width = width;
+        this.height = height;
         this.scale = scale;
 
 
@@ -27,7 +28,7 @@ public enum TextImages implements BitmapMethods {
         Bitmap imageAtlas = BitmapFactory.decodeResource(MainActivity.getGameContext().getResources(),resID, options);
 
         for(int i = 0; i < textImages.length; i++)
-            textImages[i] = getImageScaledBitmap(Bitmap.createBitmap(imageAtlas,width * i ,0, width, height), scale);
+            textImages[i] = Bitmap.createBitmap(imageAtlas,width * i ,0, width, height);
 
     }
 
@@ -36,11 +37,39 @@ public enum TextImages implements BitmapMethods {
     }
 
     public Bitmap getTextImg(int number){
-        return textImages[number];
+        return  getImageScaledBitmap(textImages[number] , scale);
     }
+
+    public Bitmap getTintedTextImg(int number){
+        //3D4E65
+        Bitmap finalBitmap = Bitmap.createBitmap(width * scale, height * scale, textImages[number].getConfig());
+
+        //replace pixel colour with another colour
+        int[] pixels = new int[width * height];
+        textImages[number].getPixels(pixels,0, width,0,0,width ,height);
+
+        for (int y = 0; y < height; y++){
+            for (int x = 0; x < width; x++){
+                int index = y * width + x;
+                if(pixels[index] == 0xFFFFFFFF){ //white
+                    pixels[index] = 0xFF3D4E65;
+                } else if (pixels[index] == 0xFF404040){ //grey shadow
+                    pixels[index] = 0xFF596880;
+                }
+            }
+        }
+        finalBitmap.setPixels(pixels,0, width,0,0, width, height);
+
+        return getImageScaledBitmap(finalBitmap, scale);
+    }
+
+
 
     public int getWidth(){
         return width;
+    }
+    public int getHeight(){
+        return height;
     }
     public int getScale(){
         return scale;

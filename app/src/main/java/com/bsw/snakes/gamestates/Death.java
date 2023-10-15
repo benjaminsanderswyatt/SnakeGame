@@ -15,6 +15,7 @@ import com.bsw.snakes.ui.CloudType;
 import com.bsw.snakes.ui.Clouds;
 import com.bsw.snakes.ui.CustomButton;
 import com.bsw.snakes.ui.Images;
+import com.bsw.snakes.ui.TextImages;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -133,30 +134,22 @@ public class Death extends BaseState implements GameStateInterface {
 
 
         //GRAVE
-        c.drawBitmap(Images.GRAVE.getImg(),GameConstants.GAME_WIDTH / 16,GameConstants.GAME_HEIGHT * 2 / 3 - (Images.GRAVE.getHeight() - 4) * Images.GRAVE.getScale() , null);
+        c.drawBitmap(Images.GRAVE.getImg(),GameConstants.GAME_WIDTH / 16,GameConstants.GAME_HEIGHT * 2/3 - (Images.GRAVE.getHeight() - 4) * Images.GRAVE.getScale() , null);
 
+        //SCORE
+        char[] digitsS = String.valueOf(game.getGameScore()).toCharArray();
+        for (int i = 0; i < digitsS.length; i++){
+            c.drawBitmap(TextImages.NUMBERS.getTintedTextImg(Character.getNumericValue(digitsS[i])),
+                    GameConstants.GAME_WIDTH / 16 + (Images.GRAVE.getWidth() * Images.GRAVE.getScale()) / 2 + i * TextImages.NUMBERS.getWidth() * TextImages.NUMBERS.getScale() * 4/3 - (digitsS.length * TextImages.NUMBERS.getWidth() * TextImages.NUMBERS.getScale())/2,
+                    GameConstants.GAME_HEIGHT * 2/3 - (Images.GRAVE.getHeight() - 4) * Images.GRAVE.getScale() + Images.GRAVE.getHeight() * Images.GRAVE.getScale() * 7/10,
+                    null);
+        }
 
         //BUTTONS
         c.drawBitmap(ButtonImages.BACK_TO_MENU_TEXT.getBtnImg(menuBtn.isPushed()),
                 menuBtn.getHitbox().left, menuBtn.getHitbox().top, null);
         c.drawBitmap(ButtonImages.RESTART.getBtnImg(restartBtn.isPushed()),
                 restartBtn.getHitbox().left, restartBtn.getHitbox().top, null);
-
-
-
-        paint = new Paint();
-        paint.setTextSize(60);
-        paint.setColor(Color.RED);
-
-        c.drawText(String.valueOf(game.getGameSpeed()), 200, 800, paint);
-
-
-
-
-
-
-
-
     }
 
     @Override
