@@ -1,7 +1,5 @@
 package com.bsw.snakes.ui;
 
-import java.util.Random;
-
 public class Clouds {
 
     int x,y, speed;

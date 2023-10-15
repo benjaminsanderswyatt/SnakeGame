@@ -9,19 +9,19 @@ public class SnakePoints {
         this.yPosition = yPosition;
     }
 
-    public float getxPosition() {
+    public float getXPosition() {
         return xPosition;
     }
 
-    public void setxPosition(float xPosition) {
+    public void setXPosition(float xPosition) {
         this.xPosition = xPosition;
     }
 
-    public float getyPosition() {
+    public float getYPosition() {
         return yPosition;
     }
 
-    public void setyPosition(float yPosition) {
+    public void setYPosition(float yPosition) {
         this.yPosition = yPosition;
     }
 }

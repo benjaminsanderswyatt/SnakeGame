@@ -4,7 +4,7 @@ import android.graphics.RectF;
 
 public class CustomButton{
 
-    private RectF hitbox;
+    private final RectF hitbox;
 
     private boolean pushed;
     public CustomButton(float x, float y, float width, float height, int scale){

@@ -1,8 +1,6 @@
 package com.bsw.snakes.gamestates;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 
@@ -21,21 +19,18 @@ import java.util.Random;
 
 public class Menu extends BaseState implements GameStateInterface {
 
-    private Paint paint;
+    private final CustomButton startBtn;
+    private final CustomButton settingsBtn;
+    private final CustomButton starBtn;
+    private final CustomButton muteBtn;
+    private final CustomButton questionBtn;
 
-    private CustomButton startBtn, settingsBtn, starBtn, muteBtn, questionBtn;
+    private final ArrayList<Clouds> clouds = new ArrayList<>();
 
-    private ArrayList<Clouds> clouds = new ArrayList<>();
-    private CloudType cloudTypeRnd;
-
-    private Random rnd = new Random();
+    private final Random rnd = new Random();
 
     public Menu(Game game){
         super(game);
-        paint = new Paint();
-        paint.setTextSize(60);
-        paint.setColor(Color.WHITE);
-
 
         startBtn = new CustomButton(getSignPostLeft(33),getSignPostTop(15), ButtonImages.MENU_START.getWidth(), ButtonImages.MENU_START.getHeight(), ButtonImages.MENU_START.getScale());
         settingsBtn = new CustomButton(getSignPostLeft(33),getSignPostTop(38), ButtonImages.MENU_SETTINGS.getWidth(), ButtonImages.MENU_SETTINGS.getHeight(), ButtonImages.MENU_SETTINGS.getScale());
@@ -47,7 +42,7 @@ public class Menu extends BaseState implements GameStateInterface {
 
 
         for (int i = 0; i <= 7; i++) {
-            cloudTypeRnd = CloudType.values()[rnd.nextInt(CloudType.values().length)];
+            CloudType cloudTypeRnd = CloudType.values()[rnd.nextInt(CloudType.values().length)];
             clouds.add(new Clouds(rnd.nextInt(GameConstants.GAME_WIDTH), cloudTypeRnd.getHeight() + rnd.nextInt(GameConstants.GAME_HEIGHT / 2), cloudTypeRnd, 2 + rnd.nextInt(3)));
         }
     }

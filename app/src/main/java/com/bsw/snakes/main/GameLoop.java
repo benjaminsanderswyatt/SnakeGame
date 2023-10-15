@@ -1,11 +1,9 @@
 package com.bsw.snakes.main;
 
-import com.bsw.snakes.helpers.GameConstants;
-
 public class GameLoop implements Runnable {
 
     private final Thread gameThread;
-    private Game game;
+    private final Game game;
 
     public GameLoop(Game game){
         this.game = game;

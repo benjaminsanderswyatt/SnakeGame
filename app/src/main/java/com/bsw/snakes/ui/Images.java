@@ -20,8 +20,10 @@ public enum Images implements BitmapMethods {
     GRAVE(R.drawable.grave_stone, 58, 64, 10),
     SCORE(R.drawable.score, 23, 6, 10);
 
-    private int width,height, scale;
-    private Bitmap image;
+    private final int width;
+    private final int height;
+    private final int scale;
+    private final Bitmap image;
 
     Images(int resID, int width, int height, int scale){
         options.inScaled = false;

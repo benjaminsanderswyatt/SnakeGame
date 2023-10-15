@@ -15,9 +15,9 @@ import com.bsw.snakes.gamestates.Settings;
 
 public class Game extends GameSettings{
 
-    private SurfaceHolder holder;
+    private final SurfaceHolder holder;
 
-    private GameLoop gameLoop;
+    private final GameLoop gameLoop;
 
     private Menu menu;
     private Settings settings;
@@ -142,7 +142,7 @@ public class Game extends GameSettings{
 
 
     public enum GameState{
-        MENU, SETTINGS, SCORES, CREDITS, PLAYING, PAUSED, DEATH;
+        MENU, SETTINGS, SCORES, CREDITS, PLAYING, PAUSED, DEATH
     }
 
     public GameState getCurrentGameState(){

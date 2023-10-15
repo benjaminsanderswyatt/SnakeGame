@@ -12,8 +12,10 @@ public enum TextImages implements BitmapMethods {
 
     NUMBERS(R.drawable.numbers,3,6,10,10);
 
-    private int width, height, scale;
-    private Bitmap[] textImages;
+    private final int width;
+    private final int height;
+    private final int scale;
+    private final Bitmap[] textImages;
 
     TextImages(int resID, int width, int height,int number, int scale) {
         options.inScaled = false;

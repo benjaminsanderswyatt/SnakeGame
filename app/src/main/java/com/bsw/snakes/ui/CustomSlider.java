@@ -4,10 +4,9 @@ import android.graphics.RectF;
 
 public class CustomSlider {
 
-    private int value = 3; //True value is + 5
-    //private int minValue = 0;
-    private int numOfSections = 21;
-    private RectF hitbox;
+    private int value = 3;
+    //numOfSections is 21
+    private final RectF hitbox;
 
     private boolean pushed;
 
@@ -19,14 +18,6 @@ public class CustomSlider {
     public RectF getHitbox(){
         return hitbox;
     }
-
-    //public int getMinValue(){
-    //    return minValue;
-    //}
-
-    //public void setMinValue(int minValue){
-    //    this.minValue = minValue;
-    //}
 
     public boolean isPushed(){
         return pushed;
@@ -42,7 +33,7 @@ public class CustomSlider {
         boolean found = false;
 
         for (int i = 0; i < 21; i++){
-            float hi = i * hitbox.width() / numOfSections + hitbox.width() / numOfSections;
+            float hi = i * hitbox.width() / 21 + hitbox.width() / 21;
             if (posInSlider < hi && !found){
                 found = true;
                 value = i;

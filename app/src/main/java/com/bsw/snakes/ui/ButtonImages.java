@@ -26,8 +26,11 @@ public enum ButtonImages implements BitmapMethods {
 
     PLAYING_PAUSE(R.drawable.pause_btn, 14,14, 10);
 
-    private int width,height, scale;
-    private Bitmap normal,pushed;
+    private final int width;
+    private final int height;
+    private final int scale;
+    private final Bitmap normal;
+    private final Bitmap pushed;
 
 
     ButtonImages(int resID, int width, int height, int scale){

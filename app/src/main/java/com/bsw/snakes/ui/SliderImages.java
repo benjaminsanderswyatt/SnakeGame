@@ -3,10 +3,7 @@ package com.bsw.snakes.ui;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 
 import com.bsw.snakes.R;
@@ -17,8 +14,10 @@ public enum SliderImages implements BitmapMethods {
 
     SLIDER(R.drawable.slider, 61,7, 15);
 
-    private int sliderWidth, height, scale;
-    private Bitmap slider;
+    private final int sliderWidth;
+    private final int height;
+    private final int scale;
+    private final Bitmap slider;
 
 
     SliderImages(int resID, int sliderWidth, int height, int scale){

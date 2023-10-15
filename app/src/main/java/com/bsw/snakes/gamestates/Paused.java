@@ -10,7 +10,7 @@ import com.bsw.snakes.main.Game;
 
 public class Paused extends BaseState implements GameStateInterface {
 
-    private Paint paint;
+    private final Paint paint;
     public Paused(Game game) {
         super(game);
         paint = new Paint();

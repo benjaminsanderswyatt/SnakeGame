@@ -19,8 +19,10 @@ public enum CloudType implements BitmapMethods {
     CLOUD3(R.drawable.cloud3,13,5,11),
     CLOUD4(R.drawable.cloud4,36,14,11);
 
-    private int width,height, scale;
-    private Bitmap image;
+    private final int width;
+    private final int height;
+    private final int scale;
+    private final Bitmap image;
 
     CloudType(int resID, int width, int height, int scale){
         options.inScaled = false;

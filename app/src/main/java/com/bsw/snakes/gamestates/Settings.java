@@ -1,8 +1,6 @@
 package com.bsw.snakes.gamestates;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 
@@ -20,18 +18,18 @@ import com.bsw.snakes.ui.TextImages;
 
 public class Settings extends BaseState implements GameStateInterface {
 
-    private Paint paint;
 
-    private CustomButton menuBtn;
 
-    private CustomSlider widthSld, heightSld, numOfFruitSld, gameSpeedSld, startingLengthSld;
+    private final CustomButton menuBtn;
+
+    private final CustomSlider widthSld;
+    private final CustomSlider heightSld;
+    private final CustomSlider numOfFruitSld;
+    private final CustomSlider gameSpeedSld;
+    private final CustomSlider startingLengthSld;
 
     public Settings(Game game){
         super(game);
-        paint = new Paint();
-        paint.setTextSize(60);
-        paint.setColor(Color.WHITE);
-
 
         menuBtn = new CustomButton(
                 (GameConstants.GAME_WIDTH - ButtonImages.BACK_TO_MENU.getWidth() * ButtonImages.BACK_TO_MENU.getScale()) / 2,
@@ -44,13 +42,6 @@ public class Settings extends BaseState implements GameStateInterface {
         startingLengthSld = new CustomSlider(GameConstants.GAME_WIDTH /21,GameConstants.GAME_HEIGHT* 12/20, SliderImages.SLIDER.getWidth(), SliderImages.SLIDER.getHeight(), SliderImages.SLIDER.getScale());
         widthSld = new CustomSlider(GameConstants.GAME_WIDTH /21,GameConstants.GAME_HEIGHT* 15/20, SliderImages.SLIDER.getWidth(), SliderImages.SLIDER.getHeight(), SliderImages.SLIDER.getScale());
         heightSld = new CustomSlider(GameConstants.GAME_WIDTH /21,GameConstants.GAME_HEIGHT* 18/20, SliderImages.SLIDER.getWidth(), SliderImages.SLIDER.getHeight(), SliderImages.SLIDER.getScale());
-
-        //numOfFruitSld.setMinValue(GameSettings.getMinNumOfFruit());
-        //gameSpeedSld.setMinValue(GameSettings.getMinGameSpeed());
-        //startingLengthSld.setMinValue(GameSettings.getMinStartingLength());
-        //widthSld.setMinValue(GameSettings.getMinGameSizeX());
-        //heightSld.setMinValue(GameSettings.getMinGameSizeY());
-
 
     }
 

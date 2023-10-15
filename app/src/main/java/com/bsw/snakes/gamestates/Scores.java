@@ -1,8 +1,6 @@
 package com.bsw.snakes.gamestates;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.MotionEvent;
 
 import com.bsw.snakes.enviroments.Floor;
@@ -15,18 +13,12 @@ import com.bsw.snakes.ui.Images;
 
 public class Scores extends BaseState implements GameStateInterface {
 
-    private Paint paint;
-
-    private CustomButton menuBtn;
+    private final CustomButton menuBtn;
 
 
 
     public Scores(Game game){
         super(game);
-        paint = new Paint();
-        paint.setTextSize(60);
-        paint.setColor(Color.WHITE);
-
 
         menuBtn = new CustomButton(
                 (GameConstants.GAME_WIDTH - ButtonImages.BACK_TO_MENU.getWidth() * ButtonImages.BACK_TO_MENU.getScale()) / 2,

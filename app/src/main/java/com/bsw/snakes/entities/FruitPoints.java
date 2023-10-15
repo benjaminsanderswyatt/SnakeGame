@@ -11,19 +11,19 @@ public class FruitPoints {
         this.type = type;
     }
 
-    public float getxPos() {
+    public float getXPos() {
         return xPos;
     }
 
-    public void setxPos(float xPos) {
+    public void setXPos(float xPos) {
         this.xPos = xPos;
     }
 
-    public float getyPos() {
+    public float getYPos() {
         return yPos;
     }
 
-    public void setyPos(float yPos) {
+    public void setYPos(float yPos) {
         this.yPos = yPos;
     }
 

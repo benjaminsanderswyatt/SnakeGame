@@ -24,25 +24,16 @@ import java.util.Random;
 
 public class Playing extends BaseState implements GameStateInterface {
 
-    //Uses the formula   Math.Ciel( GAMEWIDTH / BITSCALER ) = sizeOfMapX   to get the number of tiles in its respective orientation
-    //then does    ( ( sizeOfMapX * BITSCALER ) - GAMEWIDTH ) / 2 = OffsetX     to get the offset required for the canvas to centre on the screen
-    //float DRAWOFFSETX = ((((int) Math.ceil(GameConstants.GAME_WIDTH /(GameConstants.BITSCALER))) * GameConstants.BITSCALER) - GameConstants.GAME_WIDTH) / 2;
-    //float DRAWOFFSETY = ((((int) Math.ceil(GameConstants.GAME_HEIGHT/(GameConstants.BITSCALER))) * GameConstants.BITSCALER) - GameConstants.GAME_HEIGHT) / 2;
-
-    //float BScaler = (float)(GameConstants.GAME_WIDTH / game.getGameSizeX());
-    float BScaler = game.getScaler() * 16;
-    //float BScaler = (float)(GameConstants.GAME_WIDTH / (game.getGameSizeX() * 16));
+    final float BScaler = game.getScaler() * 16;
 
     //gamesize + 1 for half the walls
-    float OffsetX = ((game.getGameSizeX() +2f) * BScaler - GameConstants.GAME_WIDTH) /2;
-    float OffsetY = ((game.getGameSizeY()+2f) * BScaler - GameConstants.GAME_HEIGHT) /2;
+    final float OffsetX = ((game.getGameSizeX() +2f) * BScaler - GameConstants.GAME_WIDTH) /2;
+    final float OffsetY = ((game.getGameSizeY()+2f) * BScaler - GameConstants.GAME_HEIGHT) /2;
 
 
-    public List<SnakePoints> snakePoints = new ArrayList<>();
+    public final List<SnakePoints> snakePoints = new ArrayList<>();
 
-    private PointF startPosition = new PointF();
-
-    private List<FruitPoints> fruitPos = new ArrayList<>(game.getNumOfFruit());
+    private final List<FruitPoints> fruitPos = new ArrayList<>(game.getNumOfFruit());
 
     private int snakeCurrentlyFacing = GameConstants.FACE_Dir.UP, snakeMoveTo = GameConstants.FACE_Dir.UP;
 
@@ -53,7 +44,7 @@ public class Playing extends BaseState implements GameStateInterface {
     private float xTouch,yTouch;
     private boolean touchDown;
 
-    private CustomButton pauseBtn;
+    private final CustomButton pauseBtn;
 
 
 
@@ -65,7 +56,7 @@ public class Playing extends BaseState implements GameStateInterface {
         game.setGameScore(0);
 
         //Snake head starting position. The snake starts moving UP and the body is generated bellow the head.
-        startPosition = new PointF(5 * BScaler,5 * BScaler);
+        PointF startPosition = new PointF(5 * BScaler,5 * BScaler);
 
         for (int i = 0; i <= game.getNumOfFruit(); i++){
             fruitPos.add(new FruitPoints(0,0,0));
@@ -128,12 +119,12 @@ public class Playing extends BaseState implements GameStateInterface {
     public void checkFruitEaten(){
         //grow snake by 1 and create a new fruit
         for (int i = 0; i < fruitPos.size() - 1; i++){
-            if (fruitPos.get(i).getxPos() == snakePoints.get(0).getxPosition() &&
-                    fruitPos.get(i).getyPos() == snakePoints.get(0).getyPosition()) {
+            if (fruitPos.get(i).getXPos() == snakePoints.get(0).getXPosition() &&
+                    fruitPos.get(i).getYPos() == snakePoints.get(0).getYPosition()) {
 
                 //if fruit has been eaten add to snake size next time the snake moves
                 snakePoints.add(snakePoints.size(), new SnakePoints(
-                        snakePoints.get(snakePoints.size() - 1).getxPosition(), snakePoints.get(snakePoints.size() - 1).getyPosition()));
+                        snakePoints.get(snakePoints.size() - 1).getXPosition(), snakePoints.get(snakePoints.size() - 1).getYPosition()));
 
                 game.setGameScore(game.getGameScore() + 1);
 
@@ -149,32 +140,32 @@ public class Playing extends BaseState implements GameStateInterface {
         //move the body part to the position of the body part in front
         //move body
         for (int i = snakePoints.size() - 1; i > 0; i--) {
-            float prevBodyX = snakePoints.get(i - 1).getxPosition();
-            float prevBodyY = snakePoints.get(i - 1).getyPosition();
+            float prevBodyX = snakePoints.get(i - 1).getXPosition();
+            float prevBodyY = snakePoints.get(i - 1).getYPosition();
 
-            snakePoints.get(i).setxPosition(prevBodyX);
-            snakePoints.get(i).setyPosition(prevBodyY);
+            snakePoints.get(i).setXPosition(prevBodyX);
+            snakePoints.get(i).setYPosition(prevBodyY);
         }
 
         switch (snakeMoveTo) {
             case GameConstants.FACE_Dir.UP:
                 //y -= 16 * 6;
-                snakePoints.get(0).setyPosition(snakePoints.get(0).getyPosition() - BScaler);
+                snakePoints.get(0).setYPosition(snakePoints.get(0).getYPosition() - BScaler);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.UP;
                 break;
             case GameConstants.FACE_Dir.LEFT:
                 //x += 16 * 6;
-                snakePoints.get(0).setxPosition(snakePoints.get(0).getxPosition() + BScaler);
+                snakePoints.get(0).setXPosition(snakePoints.get(0).getXPosition() + BScaler);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.LEFT;
                 break;
             case GameConstants.FACE_Dir.DOWN:
                 //y += 16 * 6;
-                snakePoints.get(0).setyPosition(snakePoints.get(0).getyPosition() + BScaler);
+                snakePoints.get(0).setYPosition(snakePoints.get(0).getYPosition() + BScaler);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.DOWN;
                 break;
             case GameConstants.FACE_Dir.RIGHT:
                 //x -= 16 * 6;
-                snakePoints.get(0).setxPosition(snakePoints.get(0).getxPosition() - BScaler);
+                snakePoints.get(0).setXPosition(snakePoints.get(0).getXPosition() - BScaler);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.RIGHT;
                 break;
         }
@@ -183,8 +174,8 @@ public class Playing extends BaseState implements GameStateInterface {
 
     private void checkStillAlive() {
         //the snake is still alive as long as its head doesn't touch a wall or its tail
-        float headX = snakePoints.get(0).getxPosition();
-        float headY = snakePoints.get(0).getyPosition();
+        float headX = snakePoints.get(0).getXPosition();
+        float headY = snakePoints.get(0).getYPosition();
         //Touching wall?
         if (headY == 0 || headY == (game.getGameSizeY() + 2 - 1) * BScaler ||
                 headX == 0 || headX == (game.getGameSizeX() + 2 - 1) * BScaler) {
@@ -193,8 +184,8 @@ public class Playing extends BaseState implements GameStateInterface {
         }
         //Touching tail?
         for (int i = 1; i < snakePoints.size(); i++) {
-            if (snakePoints.get(0).getxPosition() == snakePoints.get(i).getxPosition() &&
-                    snakePoints.get(0).getyPosition() == snakePoints.get(i).getyPosition()) {
+            if (snakePoints.get(0).getXPosition() == snakePoints.get(i).getXPosition() &&
+                    snakePoints.get(0).getYPosition() == snakePoints.get(i).getYPosition()) {
 
                 game.setCurrentGameState(Game.GameState.DEATH);
             }
@@ -210,7 +201,7 @@ public class Playing extends BaseState implements GameStateInterface {
 
         //FRUIT
         for (int i = 0; i < fruitPos.size() - 1; i++){
-            c.drawBitmap(Fruit.FRUIT.getSprite(fruitPos.get(i).getType(), game.getScaler()),fruitPos.get(i).getxPos() - OffsetX,fruitPos.get(i).getyPos() - OffsetY,null);
+            c.drawBitmap(Fruit.FRUIT.getSprite(fruitPos.get(i).getType(), game.getScaler()),fruitPos.get(i).getXPos() - OffsetX,fruitPos.get(i).getYPos() - OffsetY,null);
         }
 
         drawSnake(c);
@@ -219,7 +210,7 @@ public class Playing extends BaseState implements GameStateInterface {
 
     public void drawSnake(Canvas c){
         //Head of snake
-        c.drawBitmap(GameCharacters.SNAKE.getSprite(0, snakeCurrentlyFacing, game.getScaler()),snakePoints.get(0).getxPosition() - OffsetX, snakePoints.get(0).getyPosition() - OffsetY,null);
+        c.drawBitmap(GameCharacters.SNAKE.getSprite(0, snakeCurrentlyFacing, game.getScaler()),snakePoints.get(0).getXPosition() - OffsetX, snakePoints.get(0).getYPosition() - OffsetY,null);
 
         //Middle of snake
         for (int i = 1; i < snakePoints.size() - 1; i++){
@@ -231,14 +222,14 @@ public class Playing extends BaseState implements GameStateInterface {
             //When displaying the current section whether the adjacent sections are the previous or next
             //doesn't matter as they display the same
 
-            float previousBodyX = snakePoints.get(i - 1).getxPosition();
-            float previousBodyY = snakePoints.get(i - 1).getyPosition();
+            float previousBodyX = snakePoints.get(i - 1).getXPosition();
+            float previousBodyY = snakePoints.get(i - 1).getYPosition();
 
-            float bodyX = snakePoints.get(i).getxPosition();
-            float bodyY = snakePoints.get(i).getyPosition();
+            float bodyX = snakePoints.get(i).getXPosition();
+            float bodyY = snakePoints.get(i).getYPosition();
 
-            float nextBodyX = snakePoints.get(i + 1).getxPosition();
-            float nextBodyY = snakePoints.get(i + 1).getyPosition();
+            float nextBodyX = snakePoints.get(i + 1).getXPosition();
+            float nextBodyY = snakePoints.get(i + 1).getYPosition();
 
             float nowXRelToPrev = bodyX - previousBodyX;
             float nowXRelToNext = bodyX - nextBodyX;
@@ -293,13 +284,13 @@ public class Playing extends BaseState implements GameStateInterface {
                 spriteIdX = 3;
             }
 
-            c.drawBitmap(GameCharacters.SNAKE.getSprite(spriteIdY, spriteIdX, game.getScaler()),snakePoints.get(i).getxPosition()  - OffsetX, snakePoints.get(i).getyPosition() - OffsetY,null);
+            c.drawBitmap(GameCharacters.SNAKE.getSprite(spriteIdY, spriteIdX, game.getScaler()),snakePoints.get(i).getXPosition()  - OffsetX, snakePoints.get(i).getYPosition() - OffsetY,null);
         }
 
         //Tail of snake
 
-        float nowXRelToPrev = snakePoints.get(snakePoints.size() - 1).getxPosition() - snakePoints.get(snakePoints.size() - 2).getxPosition();
-        float nowYRelToPrev = snakePoints.get(snakePoints.size() - 1).getyPosition() - snakePoints.get(snakePoints.size() - 2).getyPosition();
+        float nowXRelToPrev = snakePoints.get(snakePoints.size() - 1).getXPosition() - snakePoints.get(snakePoints.size() - 2).getXPosition();
+        float nowYRelToPrev = snakePoints.get(snakePoints.size() - 1).getYPosition() - snakePoints.get(snakePoints.size() - 2).getYPosition();
 
         int spriteIdX = 0;
 
@@ -326,7 +317,7 @@ public class Playing extends BaseState implements GameStateInterface {
         }
 
 
-        c.drawBitmap(GameCharacters.SNAKE.getSprite(3, spriteIdX, game.getScaler()),snakePoints.get(snakePoints.size() - 1).getxPosition() - OffsetX, snakePoints.get(snakePoints.size() - 1).getyPosition() - OffsetY,null);
+        c.drawBitmap(GameCharacters.SNAKE.getSprite(3, spriteIdX, game.getScaler()),snakePoints.get(snakePoints.size() - 1).getXPosition() - OffsetX, snakePoints.get(snakePoints.size() - 1).getYPosition() - OffsetY,null);
     }
 
     private void drawUI(Canvas c){
@@ -439,13 +430,13 @@ public class Playing extends BaseState implements GameStateInterface {
 
 
 
-            fruitPos.get(index).setxPos((rnd.nextInt(game.getGameSizeX() + 2 - 3 + 1) + 1) * BScaler);
-            fruitPos.get(index).setyPos((rnd.nextInt(game.getGameSizeY() + 2 - 3 + 1) + 1) * BScaler);
+            fruitPos.get(index).setXPos((rnd.nextInt(game.getGameSizeX() + 2 - 3 + 1) + 1) * BScaler);
+            fruitPos.get(index).setYPos((rnd.nextInt(game.getGameSizeY() + 2 - 3 + 1) + 1) * BScaler);
 
             for (int i = 0; i < snakePoints.size(); i++) {
 
-                if(fruitPos.get(index).getxPos() == snakePoints.get(i).getxPosition() &&
-                        fruitPos.get(index).getyPos() == snakePoints.get(i).getyPosition()){
+                if(fruitPos.get(index).getXPos() == snakePoints.get(i).getXPosition() &&
+                        fruitPos.get(index).getYPos() == snakePoints.get(i).getYPosition()){
 
                     validPos = false;
                 }
@@ -456,12 +447,12 @@ public class Playing extends BaseState implements GameStateInterface {
     }
 
     public void setSnakeMoveTo(int snakeMoveTo){
-        int snakeOppositeFacting;
-        snakeOppositeFacting = snakeCurrentlyFacing + 2;
-        if (snakeOppositeFacting >= 4) {
-            snakeOppositeFacting -= 4;
+        int snakeOppositeFaceing;
+        snakeOppositeFaceing = snakeCurrentlyFacing + 2;
+        if (snakeOppositeFaceing >= 4) {
+            snakeOppositeFaceing -= 4;
         }
-        if (snakeOppositeFacting == snakeMoveTo) {
+        if (snakeOppositeFaceing == snakeMoveTo) {
             snakeMoveTo = snakeCurrentlyFacing;
         }
 
