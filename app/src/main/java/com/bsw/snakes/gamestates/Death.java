@@ -34,7 +34,7 @@ public class Death extends BaseState implements GameStateInterface {
     public Death(Game game) {
         super(game);
 
-        menuBtn = new CustomButton((GameConstants.GAME_WIDTH - ButtonImages.BACK_TO_MENU_TEXT.getWidth() * ButtonImages.BACK_TO_MENU.getScale()) / 2,GameConstants.GAME_HEIGHT * 13/16, ButtonImages.BACK_TO_MENU_TEXT.getWidth(), ButtonImages.BACK_TO_MENU_TEXT.getHeight(), ButtonImages.BACK_TO_MENU_TEXT.getScale());
+        menuBtn = new CustomButton((GameConstants.GAME_WIDTH - ButtonImages.BACK_TO_MENU.getWidth() * ButtonImages.BACK_TO_MENU.getScale()) / 2,GameConstants.GAME_HEIGHT * 13/16, ButtonImages.BACK_TO_MENU.getWidth(), ButtonImages.BACK_TO_MENU.getHeight(), ButtonImages.BACK_TO_MENU.getScale());
         restartBtn = new CustomButton((GameConstants.GAME_WIDTH - ButtonImages.RESTART.getWidth() * ButtonImages.RESTART.getScale()) / 2,GameConstants.GAME_HEIGHT * 14/16, ButtonImages.RESTART.getWidth(), ButtonImages.RESTART.getHeight(), ButtonImages.RESTART.getScale());
 
 
@@ -53,6 +53,7 @@ public class Death extends BaseState implements GameStateInterface {
     @Override
     public void update(double delta) {
 
+
         //MOVE RAIN
         if (rainOffsetY <= GameConstants.BITSCALER){
             rainOffsetY += 8;
@@ -64,6 +65,8 @@ public class Death extends BaseState implements GameStateInterface {
         } else {
             rainOffsetX = 2;
         }
+
+
 
 
         //MOVE CLOUDS
@@ -91,8 +94,10 @@ public class Death extends BaseState implements GameStateInterface {
         //RAIN
         for (int j = 0; j <= GameConstants.GAME_HEIGHT * 2 / 3; j += GameConstants.BITSCALER)
             for (int i = 0; i <= GameConstants.GAME_WIDTH + GameConstants.BITSCALER; i += GameConstants.BITSCALER) {
-                c.drawBitmap(Floor.OUTSIDE.getSprites(3, 5), i - rainOffsetX, j - GameConstants.BITSCALER + rainOffsetY, null);
+                c.drawBitmap(Floor.OUTSIDE.getSprites(6, 5), i - rainOffsetX, j - GameConstants.BITSCALER + rainOffsetY, null);
             }
+
+
 
 
         //CLOUDS
@@ -139,7 +144,7 @@ public class Death extends BaseState implements GameStateInterface {
         }
 
         //BUTTONS
-        c.drawBitmap(ButtonImages.BACK_TO_MENU_TEXT.getBtnImg(menuBtn.isPushed()),
+        c.drawBitmap(ButtonImages.BACK_TO_MENU.getBtnImg(menuBtn.isPushed()),
                 menuBtn.getHitbox().left, menuBtn.getHitbox().top, null);
         c.drawBitmap(ButtonImages.RESTART.getBtnImg(restartBtn.isPushed()),
                 restartBtn.getHitbox().left, restartBtn.getHitbox().top, null);

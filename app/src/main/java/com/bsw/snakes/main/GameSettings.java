@@ -4,16 +4,21 @@ import com.bsw.snakes.helpers.GameConstants;
 
 public class GameSettings {
 
+    private boolean inputMethodSwipe = true;
+
     private boolean muted = false;
 
     private int gameSizeX = 10; //gamesize not including walls
     private int gameSizeY = 10; //gamesize not including walls
 
-    private int gameSpeed = 2; //snake moves every 1 / gamespeed seconds
+    private int gameSpeed = 3; //snake moves every 1 / gamespeed seconds
+
     private int startingLength = 3;
     private int numOfFruit = 1;
 
     private int gameScore = 0;
+
+
 
     public void setGameScore(int gameScore){this.gameScore = gameScore;}
 
@@ -31,11 +36,11 @@ public class GameSettings {
     }
 
 
-
+    public void setInputMethodSwipe(boolean inputMethodSwipe){this.inputMethodSwipe = inputMethodSwipe;}
+    public boolean getInputMethodIsSwipe(){return inputMethodSwipe;}
 
 
     public void setMuted(boolean muted){this.muted = muted;}
-
     public boolean getMuted(){return muted;}
 
 
@@ -73,5 +78,7 @@ public class GameSettings {
         return numOfFruit;
     }
     public static int getMinNumOfFruit(){return 1;}
+
+
 
 }

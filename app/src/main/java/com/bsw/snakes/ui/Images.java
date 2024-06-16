@@ -18,7 +18,8 @@ public enum Images implements BitmapMethods {
     SPEED(R.drawable.speed,23,7,10),
     LENGTH(R.drawable.length,26,7,10),
     GRAVE(R.drawable.grave_stone, 58, 64, 10),
-    SCORE(R.drawable.score, 23, 6, 10);
+    SCORE(R.drawable.score, 23, 6, 10),
+    BOX(R.drawable.box, 51, 31, 10);
 
     private final int width;
     private final int height;

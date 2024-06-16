@@ -15,14 +15,14 @@ public enum ButtonImages implements BitmapMethods {
     MENU_MUTE(R.drawable.mute_btn, 14,14, 10),
     MENU_QUESTION(R.drawable.question_btn, 14,14, 10),
 
+    MENU_INPUT_ARROW(R.drawable.input_arrow_btn, 22,23, 10),
+    MENU_INPUT_SWIPE(R.drawable.input_swipe_btn, 22,23, 10),
+
 
     RESTART(R.drawable.restart_btn, 32,14, 10),
 
 
-    BACK_TO_MENU(R.drawable.menu_btn, 14,14, 10),
-    BACK_TO_MENU_TEXT(R.drawable.menu_text_btn, 23,14, 10),
-
-
+    BACK_TO_MENU(R.drawable.menu_btn, 23,14, 10),
 
     PLAYING_PAUSE(R.drawable.pause_btn, 14,14, 10);
 

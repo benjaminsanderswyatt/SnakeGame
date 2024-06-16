@@ -1,6 +1,7 @@
 package com.bsw.snakes.gamestates;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 
@@ -24,6 +25,8 @@ public class Menu extends BaseState implements GameStateInterface {
     private final CustomButton starBtn;
     private final CustomButton muteBtn;
     private final CustomButton questionBtn;
+    private final CustomButton inputArrowBtn;
+    private final CustomButton inputSwipeBtn;
 
     private final ArrayList<Clouds> clouds = new ArrayList<>();
 
@@ -38,7 +41,15 @@ public class Menu extends BaseState implements GameStateInterface {
         muteBtn = new CustomButton(getSignPostLeft(9),getSignPostTop(30), ButtonImages.MENU_MUTE.getWidth(), ButtonImages.MENU_MUTE.getHeight(), ButtonImages.MENU_MUTE.getScale());
         questionBtn = new CustomButton(getSignPostLeft(9),getSignPostTop(53), ButtonImages.MENU_QUESTION.getWidth(), ButtonImages.MENU_QUESTION.getHeight(), ButtonImages.MENU_QUESTION.getScale());
 
-
+        inputArrowBtn = new CustomButton(GameConstants.GAME_WIDTH * 1/100, GameConstants.GAME_HEIGHT * 99/100 - (ButtonImages.MENU_INPUT_ARROW.getHeight() * ButtonImages.MENU_INPUT_ARROW.getScale()),ButtonImages.MENU_INPUT_ARROW.getWidth(), ButtonImages.MENU_INPUT_ARROW.getHeight(), ButtonImages.MENU_INPUT_ARROW.getScale());
+        inputSwipeBtn = new CustomButton(GameConstants.GAME_WIDTH - (ButtonImages.MENU_INPUT_SWIPE.getWidth() * ButtonImages.MENU_INPUT_SWIPE.getScale() + GameConstants.GAME_WIDTH * 1/100), GameConstants.GAME_HEIGHT * 99/100 - (ButtonImages.MENU_INPUT_SWIPE.getHeight() * ButtonImages.MENU_INPUT_SWIPE.getScale()),ButtonImages.MENU_INPUT_SWIPE.getWidth(), ButtonImages.MENU_INPUT_SWIPE.getHeight(), ButtonImages.MENU_INPUT_SWIPE.getScale());
+        if(game.getInputMethodIsSwipe()){
+            inputArrowBtn.setPushed(false);
+            inputSwipeBtn.setPushed(true);
+        } else {
+            inputArrowBtn.setPushed(true);
+            inputSwipeBtn.setPushed(false);
+        }
 
 
         for (int i = 0; i <= 7; i++) {
@@ -143,6 +154,11 @@ public class Menu extends BaseState implements GameStateInterface {
                 questionBtn.getHitbox().left, questionBtn.getHitbox().top, null);
 
 
+        c.drawBitmap(ButtonImages.MENU_INPUT_ARROW.getBtnImg(inputArrowBtn.isPushed()),
+                inputArrowBtn.getHitbox().left, inputArrowBtn.getHitbox().top, null);
+
+        c.drawBitmap(ButtonImages.MENU_INPUT_SWIPE.getBtnImg(inputSwipeBtn.isPushed()),
+                inputSwipeBtn.getHitbox().left, inputSwipeBtn.getHitbox().top, null);
 
     }
 
@@ -150,6 +166,19 @@ public class Menu extends BaseState implements GameStateInterface {
     public void touchEvents(MotionEvent event) {
 
         if(event.getAction() == MotionEvent.ACTION_DOWN){
+            if (isIn(event, inputArrowBtn.getHitbox())) {
+                inputArrowBtn.setPushed(true);
+                game.setInputMethodSwipe(false);
+                inputSwipeBtn.setPushed(false);
+            }
+            if (isIn(event, inputSwipeBtn.getHitbox())) {
+                inputSwipeBtn.setPushed(true);
+                game.setInputMethodSwipe(true);
+                inputArrowBtn.setPushed(false);
+            }
+
+
+
             if (isIn(event, startBtn.getHitbox()))
                 startBtn.setPushed(true);
             if (isIn(event, settingsBtn.getHitbox()))
@@ -169,10 +198,9 @@ public class Menu extends BaseState implements GameStateInterface {
 
 
 
-
-
-
         } else if(event.getAction() == MotionEvent.ACTION_UP){
+
+
             if(isIn(event, startBtn.getHitbox()))
                 if(startBtn.isPushed()) {
                     game.setCurrentGameState(Game.GameState.PLAYING);
