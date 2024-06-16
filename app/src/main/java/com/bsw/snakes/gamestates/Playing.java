@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 
+import com.bsw.snakes.entities.Arrows;
 import com.bsw.snakes.entities.Fruit;
 import com.bsw.snakes.entities.FruitPoints;
 import com.bsw.snakes.entities.GameCharacters;
@@ -262,7 +263,6 @@ public class Playing extends BaseState implements GameStateInterface {
                 int spriteIdY;
                 int spriteIdX;
 
-                // Comments show snake orientation
                 if (previousBodyX == bodyX && nextBodyX == bodyX){
                     //  |
                     //  ?
@@ -305,8 +305,7 @@ public class Playing extends BaseState implements GameStateInterface {
                     //12
                     spriteIdY = 2;
                     spriteIdX = 3;
-                }
-                else {
+                }else {
                     spriteIdY = 0;
                     spriteIdX = 0;
                 }
@@ -323,7 +322,7 @@ public class Playing extends BaseState implements GameStateInterface {
             float nowXRelToPrev = snakePoints.get(snakePoints.size() - 1).getXPosition() - snakePoints.get(snakePoints.size() - 2).getXPosition();
             float nowYRelToPrev = snakePoints.get(snakePoints.size() - 1).getYPosition() - snakePoints.get(snakePoints.size() - 2).getYPosition();
 
-            int spriteIdX;
+            int spriteIdX = 0;
 
             if (nowXRelToPrev > 0){
                 //
@@ -345,9 +344,6 @@ public class Playing extends BaseState implements GameStateInterface {
                 //  ?
                 //
                 spriteIdX = 2;
-            }
-            else{
-                spriteIdX = 0;
             }
 
 
@@ -374,24 +370,13 @@ public class Playing extends BaseState implements GameStateInterface {
         }
 
 
-        /*
-        //ARROWS
-        switch (snakeMoveTo) {
-            case GameConstants.FACE_Dir.UP:
-                c.drawBitmap(Arrows.ARROWS.getSprite(0, 10),(GameConstants.GAME_WIDTH - 100)/2, GameConstants.GAME_HEIGHT * 18/20,null);
-                break;
-            case GameConstants.FACE_Dir.LEFT:
-                c.drawBitmap(Arrows.ARROWS.getSprite(3, 10),(GameConstants.GAME_WIDTH - 100)/2, GameConstants.GAME_HEIGHT * 18/20,null);
-                break;
-            case GameConstants.FACE_Dir.DOWN:
-                c.drawBitmap(Arrows.ARROWS.getSprite(2, 10),(GameConstants.GAME_WIDTH - 100)/2, GameConstants.GAME_HEIGHT * 18/20,null);
-                break;
-            case GameConstants.FACE_Dir.RIGHT:
-                c.drawBitmap(Arrows.ARROWS.getSprite(1, 10),(GameConstants.GAME_WIDTH - 100)/2, GameConstants.GAME_HEIGHT * 18/20,null);
-                break;
-        }
 
-         */
+        //MOVING DIRECTION ARROWS
+        c.drawBitmap(Arrows.ARROWS.getSprite(snakeMoveTo, 10),(GameConstants.GAME_WIDTH - 100)/2, GameConstants.GAME_HEIGHT * 2/20,null);
+
+
+
+
 
         if(!game.getInputMethodIsSwipe()){
             //display arrow buttons
