@@ -1,11 +1,9 @@
 package com.bsw.snakes.gamestates;
 
 import android.graphics.Canvas;
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 
-import com.bsw.snakes.entities.Arrows;
 import com.bsw.snakes.entities.Fruit;
 import com.bsw.snakes.entities.FruitPoints;
 import com.bsw.snakes.entities.GameCharacters;
@@ -261,56 +259,61 @@ public class Playing extends BaseState implements GameStateInterface {
                 float nowYRelToPrev = bodyY - previousBodyY;
                 float nowYRelToNext = bodyY - nextBodyY;
 
-                int spriteIdY = 0;
-                int spriteIdX = 0;
+                int spriteIdY;
+                int spriteIdX;
 
+                // Comments show snake orientation
                 if (previousBodyX == bodyX && nextBodyX == bodyX){
-                        //  |
-                        //  ?
-                        //  |
-                        //5
-                        spriteIdY = 1;
-                        spriteIdX = 0;
-                    }else if (previousBodyY == bodyY && nextBodyY == bodyY){
-                        //
-                        //--?--
-                        //
-                        //6
-                        spriteIdY = 1;
-                        spriteIdX = 1;
-                    }else if (nowXRelToPrev <= 0 && nowXRelToNext <= 0 && nowYRelToPrev >= 0 && nowYRelToNext >= 0){
-                        //  |
-                        //  ?--
-                        //
-                        //9
-                        spriteIdY = 2;
-                        spriteIdX = 0;
-                    }else if (nowXRelToPrev <= 0 && nowXRelToNext <= 0 && nowYRelToPrev <= 0 && nowYRelToNext <= 0) {
-                        //
-                        //  ?--
-                        //  |
-                        //10
-                        spriteIdY = 2;
-                        spriteIdX = 1;
-                    }else if (nowXRelToPrev >= 0 && nowXRelToNext >= 0 && nowYRelToPrev <= 0 && nowYRelToNext <= 0){
-                        //
-                        //--?
-                        //  |
-                        //11
-                        spriteIdY = 2;
-                        spriteIdX = 2;
-                    }else if (nowXRelToPrev >= 0 && nowXRelToNext >= 0 && nowYRelToPrev >= 0 && nowYRelToNext >= 0){
-                        //  |
-                        //--?
-                        //
-                        //12
-                        spriteIdY = 2;
-                        spriteIdX = 3;
-                    }
-
-                    c.drawBitmap(GameCharacters.SNAKE.getSprite(spriteIdY, spriteIdX, game.getScaler()),snakePoints.get(i).getXPosition()  - OffsetX, snakePoints.get(i).getYPosition() - OffsetY,null);
+                    //  |
+                    //  ?
+                    //  |
+                    //5
+                    spriteIdY = 1;
+                    spriteIdX = 0;
+                }else if (previousBodyY == bodyY && nextBodyY == bodyY){
+                    //
+                    //--?--
+                    //
+                    //6
+                    spriteIdY = 1;
+                    spriteIdX = 1;
+                }else if (nowXRelToPrev <= 0 && nowXRelToNext <= 0 && nowYRelToPrev >= 0 && nowYRelToNext >= 0){
+                    //  |
+                    //  ?--
+                    //
+                    //9
+                    spriteIdY = 2;
+                    spriteIdX = 0;
+                }else if (nowXRelToPrev <= 0 && nowXRelToNext <= 0 && nowYRelToPrev <= 0 && nowYRelToNext <= 0) {
+                    //
+                    //  ?--
+                    //  |
+                    //10
+                    spriteIdY = 2;
+                    spriteIdX = 1;
+                }else if (nowXRelToPrev >= 0 && nowXRelToNext >= 0 && nowYRelToPrev <= 0 && nowYRelToNext <= 0){
+                    //
+                    //--?
+                    //  |
+                    //11
+                    spriteIdY = 2;
+                    spriteIdX = 2;
+                }else if (nowXRelToPrev >= 0 && nowXRelToNext >= 0 && nowYRelToPrev >= 0 && nowYRelToNext >= 0){
+                    //  |
+                    //--?
+                    //
+                    //12
+                    spriteIdY = 2;
+                    spriteIdX = 3;
                 }
+                else {
+                    spriteIdY = 0;
+                    spriteIdX = 0;
+                }
+
+                c.drawBitmap(GameCharacters.SNAKE.getSprite(spriteIdY, spriteIdX, game.getScaler()),snakePoints.get(i).getXPosition()  - OffsetX, snakePoints.get(i).getYPosition() - OffsetY,null);
             }
+        }
 
 
         //Tail of snake
@@ -320,7 +323,7 @@ public class Playing extends BaseState implements GameStateInterface {
             float nowXRelToPrev = snakePoints.get(snakePoints.size() - 1).getXPosition() - snakePoints.get(snakePoints.size() - 2).getXPosition();
             float nowYRelToPrev = snakePoints.get(snakePoints.size() - 1).getYPosition() - snakePoints.get(snakePoints.size() - 2).getYPosition();
 
-            int spriteIdX = 0;
+            int spriteIdX;
 
             if (nowXRelToPrev > 0){
                 //
@@ -342,6 +345,9 @@ public class Playing extends BaseState implements GameStateInterface {
                 //  ?
                 //
                 spriteIdX = 2;
+            }
+            else{
+                spriteIdX = 0;
             }
 
 
