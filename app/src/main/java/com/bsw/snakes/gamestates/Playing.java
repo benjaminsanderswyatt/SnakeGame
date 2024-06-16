@@ -135,7 +135,7 @@ public class Playing extends BaseState implements GameStateInterface {
 
     public void checkFruitEaten(){
         //grow snake by 1 and create a new fruit
-        for (int i = 0; i < fruitPos.size() - 1; i++){
+        for (int i = 0; i <= fruitPos.size() - 1; i++){
             if (fruitPos.get(i).getXPos() == snakePoints.get(0).getXPosition() &&
                     fruitPos.get(i).getYPos() == snakePoints.get(0).getYPosition()) {
 
@@ -148,6 +148,7 @@ public class Playing extends BaseState implements GameStateInterface {
                 fruitPos.remove(i);
                 createFruit();
 
+                return;
             }
         }
 
