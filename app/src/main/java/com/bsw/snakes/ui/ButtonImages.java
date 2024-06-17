@@ -25,6 +25,7 @@ public enum ButtonImages implements BitmapMethods {
     BACK_TO_MENU(R.drawable.menu_btn, 23,14, 10),
 
     PLAYING_PAUSE(R.drawable.pause_btn, 14,14, 10),
+    PAUSED_PLAY(R.drawable.play_btn, 14,14, 10),
 
     UP_ARROW(R.drawable.up_arrow_btn, 14,14, 10),
     RIGHT_ARROW(R.drawable.right_arrow_btn, 14,14, 10),

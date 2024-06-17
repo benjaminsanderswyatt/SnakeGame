@@ -362,9 +362,14 @@ public class Playing extends BaseState implements GameStateInterface {
     }
 
     private void drawUI(Canvas c){
-        //PAUSE BUTTON
-        c.drawBitmap(ButtonImages.PLAYING_PAUSE.getBtnImg(pauseBtn.isPushed()),
-                pauseBtn.getHitbox().left, pauseBtn.getHitbox().top, null);
+
+
+        if (game.getCurrentGameState() == Game.GameState.PLAYING){ //Only show if game is playing
+            //PAUSE BUTTON
+            c.drawBitmap(ButtonImages.PLAYING_PAUSE.getBtnImg(pauseBtn.isPushed()),
+                    pauseBtn.getHitbox().left, pauseBtn.getHitbox().top, null);
+        }
+
 
         //SCORE
 
@@ -407,105 +412,99 @@ public class Playing extends BaseState implements GameStateInterface {
 
     @Override
     public void touchEvents(MotionEvent event) {
-
-        if (!game.getInputMethodIsSwipe()){
-            //Arrows
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-
-                    if (isIn(event, upBtn)){
-                        upBtn.setPushed(true);
-                    } else if (isIn(event, rightBtn)) {
-                        rightBtn.setPushed(true);
-                    } else if (isIn(event, downBtn)) {
-                        downBtn.setPushed(true);
-                    } else if (isIn(event, leftBtn)) {
-                        leftBtn.setPushed(true);
-                    }
-
-                    break;
-
-                case MotionEvent.ACTION_UP:
-
-                    if (upBtn.isPushed()){
-                        setSnakeMoveTo(GameConstants.FACE_Dir.UP);
-                    } else if (rightBtn.isPushed()) {
-                        setSnakeMoveTo(GameConstants.FACE_Dir.RIGHT);
-                    } else if (downBtn.isPushed()) {
-                        setSnakeMoveTo(GameConstants.FACE_Dir.DOWN);
-                    } else if (leftBtn.isPushed()) {
-                        setSnakeMoveTo(GameConstants.FACE_Dir.LEFT);
-                    }
-
-                    upBtn.setPushed(false);
-                    rightBtn.setPushed(false);
-                    downBtn.setPushed(false);
-                    leftBtn.setPushed(false);
-
-                    break;
-            }
-
-
+        if (!game.getInputMethodIsSwipe()) {
+            handleButtonInput(event);
         } else {
-            //Swipe
-
-            switch (event.getAction()){
-                case MotionEvent.ACTION_DOWN:
-
-                    if(isIn(event, pauseBtn))
-                        pauseBtn.setPushed(true);
-
-
-
-                    xTDown = event.getX();
-                    yTDown = event.getY();
-
-                    touchDown = true;
-
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    if(touchDown){
-                        int snakeMoveTo;
-
-                        float xDiff = event.getX() - xTDown;
-                        float yDiff = event.getY() - yTDown;
-
-                        if (Math.abs(xDiff) >= Math.abs(yDiff)){
-                            //Horizontal
-                            if (xDiff > 0) {
-                                //Right
-                                snakeMoveTo = GameConstants.FACE_Dir.RIGHT;
-                            }else{
-                                //Left
-                                snakeMoveTo = GameConstants.FACE_Dir.LEFT;
-                            }
-                        } else {
-                            //Vertical
-                            if (yDiff > 0) {
-                                //Down
-                                snakeMoveTo = GameConstants.FACE_Dir.DOWN;
-                            }else{
-                                //Up
-                                snakeMoveTo = GameConstants.FACE_Dir.UP;
-                            }
-                        }
-
-
-                        setSnakeMoveTo(snakeMoveTo);
-                    }
-                    break;
-                case MotionEvent.ACTION_UP:
-                    if(isIn(event, pauseBtn))
-                        if(pauseBtn.isPushed())
-                            game.setCurrentGameState(Game.GameState.PAUSED);
-
-                    pauseBtn.setPushed(false);
-
-                    touchDown = false;
-                    break;
-            }
+            handleSwipeInput(event);
         }
+    }
 
+    private void handleButtonInput(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                handleActionDown(event);
+                break;
+
+            case MotionEvent.ACTION_UP:
+                handleActionUp(event);
+                resetButtonStates();
+                break;
+        }
+    }
+
+    private void handleActionDown(MotionEvent event) {
+        if (isIn(event, pauseBtn)) {
+            pauseBtn.setPushed(true);
+        } else if (isIn(event, upBtn)) {
+            upBtn.setPushed(true);
+        } else if (isIn(event, rightBtn)) {
+            rightBtn.setPushed(true);
+        } else if (isIn(event, downBtn)) {
+            downBtn.setPushed(true);
+        } else if (isIn(event, leftBtn)) {
+            leftBtn.setPushed(true);
+        }
+    }
+
+    private void handleActionUp(MotionEvent event) {
+        if (pauseBtn.isPushed() && isIn(event, pauseBtn)) {
+            game.setCurrentGameState(Game.GameState.PAUSED);
+        } else if (upBtn.isPushed() && isIn(event, upBtn)) {
+            setSnakeMoveTo(GameConstants.FACE_Dir.UP);
+        } else if (rightBtn.isPushed() && isIn(event, rightBtn)) {
+            setSnakeMoveTo(GameConstants.FACE_Dir.RIGHT);
+        } else if (downBtn.isPushed() && isIn(event, downBtn)) {
+            setSnakeMoveTo(GameConstants.FACE_Dir.DOWN);
+        } else if (leftBtn.isPushed() && isIn(event, leftBtn)) {
+            setSnakeMoveTo(GameConstants.FACE_Dir.LEFT);
+        }
+    }
+
+    private void resetButtonStates() {
+        pauseBtn.setPushed(false);
+        upBtn.setPushed(false);
+        rightBtn.setPushed(false);
+        downBtn.setPushed(false);
+        leftBtn.setPushed(false);
+    }
+
+    private void handleSwipeInput(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (isIn(event, pauseBtn)) {
+                    pauseBtn.setPushed(true);
+                }
+                xTDown = event.getX();
+                yTDown = event.getY();
+                touchDown = true;
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                if (touchDown) {
+                    int snakeMoveTo;
+                    float xDiff = event.getX() - xTDown;
+                    float yDiff = event.getY() - yTDown;
+
+                    if (Math.abs(xDiff) >= Math.abs(yDiff)) {
+                        // Horizontal swipe
+                        snakeMoveTo = xDiff > 0 ? GameConstants.FACE_Dir.RIGHT : GameConstants.FACE_Dir.LEFT;
+                    } else {
+                        // Vertical swipe
+                        snakeMoveTo = yDiff > 0 ? GameConstants.FACE_Dir.DOWN : GameConstants.FACE_Dir.UP;
+                    }
+
+                    setSnakeMoveTo(snakeMoveTo);
+                }
+                break;
+
+            case MotionEvent.ACTION_UP:
+                if (isIn(event, pauseBtn) && pauseBtn.isPushed()) {
+                    game.setCurrentGameState(Game.GameState.PAUSED);
+                }
+                pauseBtn.setPushed(false);
+                touchDown = false;
+                break;
+        }
     }
 
     public boolean createFruit(){

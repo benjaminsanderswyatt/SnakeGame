@@ -85,7 +85,8 @@ public class Game extends GameSettings{
                 playing.render(c);
                 break;
             case PAUSED:
-                paused.render(c);
+                playing.render(c);
+                paused.render(c); //Overlay paused on top of playing screen
                 break;
             case DEATH:
                 death.render(c);
@@ -150,9 +151,18 @@ public class Game extends GameSettings{
     }
 
     public void setCurrentGameState(GameState currentGameState){
-        if (currentGameState == GameState.PLAYING){ //when the game starts playing initialise the values
-            playing = new Playing(this);
+
+        if (getCurrentGameState() != GameState.PAUSED){
+            if (currentGameState == GameState.PLAYING){ //when the game starts playing initialise the values
+                playing = new Playing(this);
+            }
         }
+
+        this.currentGameState = currentGameState;
+    }
+
+    public void continuePlaying(GameState currentGameState){
+
         this.currentGameState = currentGameState;
     }
 }
