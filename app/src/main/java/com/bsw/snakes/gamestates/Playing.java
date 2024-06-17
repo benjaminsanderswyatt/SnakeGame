@@ -103,10 +103,18 @@ public class Playing extends BaseState implements GameStateInterface {
 
         if(!game.getInputMethodIsSwipe()){
             //display arrow buttons
-            upBtn = new CustomButton(GameConstants.GAME_WIDTH * 50/100,GameConstants.GAME_HEIGHT * 80 /100, ButtonImages.UP_ARROW.getWidth(), ButtonImages.UP_ARROW.getHeight(), ButtonImages.UP_ARROW.getScale());
-            rightBtn = new CustomButton(GameConstants.GAME_WIDTH * 65/100,GameConstants.GAME_HEIGHT * 90 /100, ButtonImages.RIGHT_ARROW.getWidth(), ButtonImages.RIGHT_ARROW.getHeight(), ButtonImages.RIGHT_ARROW.getScale());
-            downBtn = new CustomButton(GameConstants.GAME_WIDTH * 50/100,GameConstants.GAME_HEIGHT * 90 /100, ButtonImages.DOWN_ARROW.getWidth(), ButtonImages.DOWN_ARROW.getHeight(), ButtonImages.DOWN_ARROW.getScale());
-            leftBtn = new CustomButton(GameConstants.GAME_WIDTH * 35/100,GameConstants.GAME_HEIGHT * 90 /100, ButtonImages.LEFT_ARROW.getWidth(), ButtonImages.LEFT_ARROW.getHeight(), ButtonImages.LEFT_ARROW.getScale());
+
+            float middleX = (GameConstants.GAME_WIDTH - ButtonImages.UP_ARROW.getWidth() * ButtonImages.UP_ARROW.getScale()) / 2;
+            float middleY = GameConstants.GAME_HEIGHT * 85 /100;
+
+            //arrow button height and width are all the same
+            float verticalOffset = ButtonImages.UP_ARROW.getHeight() * ButtonImages.UP_ARROW.getScale();
+            float horizontalOffset = ButtonImages.UP_ARROW.getWidth() * ButtonImages.UP_ARROW.getScale();
+
+            upBtn = new CustomButton(middleX, middleY - verticalOffset, ButtonImages.UP_ARROW.getWidth(), ButtonImages.UP_ARROW.getHeight(), ButtonImages.UP_ARROW.getScale());
+            rightBtn = new CustomButton(middleX + horizontalOffset,middleY, ButtonImages.RIGHT_ARROW.getWidth(), ButtonImages.RIGHT_ARROW.getHeight(), ButtonImages.RIGHT_ARROW.getScale());
+            downBtn = new CustomButton(middleX,middleY + verticalOffset, ButtonImages.DOWN_ARROW.getWidth(), ButtonImages.DOWN_ARROW.getHeight(), ButtonImages.DOWN_ARROW.getScale());
+            leftBtn = new CustomButton(middleX- horizontalOffset,middleY, ButtonImages.LEFT_ARROW.getWidth(), ButtonImages.LEFT_ARROW.getHeight(), ButtonImages.LEFT_ARROW.getScale());
         }
 
 
