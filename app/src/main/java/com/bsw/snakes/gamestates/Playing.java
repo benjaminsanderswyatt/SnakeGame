@@ -103,10 +103,10 @@ public class Playing extends BaseState implements GameStateInterface {
 
         if(!game.getInputMethodIsSwipe()){
             //display arrow buttons
-            upBtn = new CustomButton(GameConstants.GAME_WIDTH * 70/100,GameConstants.GAME_HEIGHT * 1 /100, ButtonImages.PLAYING_PAUSE.getWidth(), ButtonImages.PLAYING_PAUSE.getHeight(), ButtonImages.PLAYING_PAUSE.getScale());
-            rightBtn = new CustomButton(GameConstants.GAME_WIDTH * 80/100,GameConstants.GAME_HEIGHT * 1 /100, ButtonImages.PLAYING_PAUSE.getWidth(), ButtonImages.PLAYING_PAUSE.getHeight(), ButtonImages.PLAYING_PAUSE.getScale());
-            downBtn = new CustomButton(GameConstants.GAME_WIDTH * 90/100,GameConstants.GAME_HEIGHT * 1 /100, ButtonImages.PLAYING_PAUSE.getWidth(), ButtonImages.PLAYING_PAUSE.getHeight(), ButtonImages.PLAYING_PAUSE.getScale());
-            leftBtn = new CustomButton(GameConstants.GAME_WIDTH * 98/100,GameConstants.GAME_HEIGHT * 1 /100, ButtonImages.PLAYING_PAUSE.getWidth(), ButtonImages.PLAYING_PAUSE.getHeight(), ButtonImages.PLAYING_PAUSE.getScale());
+            upBtn = new CustomButton(GameConstants.GAME_WIDTH * 50/100,GameConstants.GAME_HEIGHT * 80 /100, ButtonImages.UP_ARROW.getWidth(), ButtonImages.UP_ARROW.getHeight(), ButtonImages.UP_ARROW.getScale());
+            rightBtn = new CustomButton(GameConstants.GAME_WIDTH * 65/100,GameConstants.GAME_HEIGHT * 90 /100, ButtonImages.RIGHT_ARROW.getWidth(), ButtonImages.RIGHT_ARROW.getHeight(), ButtonImages.RIGHT_ARROW.getScale());
+            downBtn = new CustomButton(GameConstants.GAME_WIDTH * 50/100,GameConstants.GAME_HEIGHT * 90 /100, ButtonImages.DOWN_ARROW.getWidth(), ButtonImages.DOWN_ARROW.getHeight(), ButtonImages.DOWN_ARROW.getScale());
+            leftBtn = new CustomButton(GameConstants.GAME_WIDTH * 35/100,GameConstants.GAME_HEIGHT * 90 /100, ButtonImages.LEFT_ARROW.getWidth(), ButtonImages.LEFT_ARROW.getHeight(), ButtonImages.LEFT_ARROW.getScale());
         }
 
 
@@ -170,20 +170,20 @@ public class Playing extends BaseState implements GameStateInterface {
                 snakePoints.get(0).setYPosition(snakePoints.get(0).getYPosition() - BScaler);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.UP;
                 break;
-            case GameConstants.FACE_Dir.LEFT:
-                //x += 16 * 6;
+            case GameConstants.FACE_Dir.RIGHT:
+                //x -= 16 * 6;
                 snakePoints.get(0).setXPosition(snakePoints.get(0).getXPosition() + BScaler);
-                snakeCurrentlyFacing = GameConstants.FACE_Dir.LEFT;
+                snakeCurrentlyFacing = GameConstants.FACE_Dir.RIGHT;
                 break;
             case GameConstants.FACE_Dir.DOWN:
                 //y += 16 * 6;
                 snakePoints.get(0).setYPosition(snakePoints.get(0).getYPosition() + BScaler);
                 snakeCurrentlyFacing = GameConstants.FACE_Dir.DOWN;
                 break;
-            case GameConstants.FACE_Dir.RIGHT:
-                //x -= 16 * 6;
+            case GameConstants.FACE_Dir.LEFT:
+                //x += 16 * 6;
                 snakePoints.get(0).setXPosition(snakePoints.get(0).getXPosition() - BScaler);
-                snakeCurrentlyFacing = GameConstants.FACE_Dir.RIGHT;
+                snakeCurrentlyFacing = GameConstants.FACE_Dir.LEFT;
                 break;
         }
 
@@ -226,6 +226,7 @@ public class Playing extends BaseState implements GameStateInterface {
     }
 
     public void drawSnake(Canvas c){
+
         //Head of snake
         c.drawBitmap(GameCharacters.SNAKE.getSprite(0, snakeCurrentlyFacing, game.getScaler()),snakePoints.get(0).getXPosition() - OffsetX, snakePoints.get(0).getYPosition() - OffsetY,null);
 
@@ -370,23 +371,25 @@ public class Playing extends BaseState implements GameStateInterface {
         }
 
 
-
-        //MOVING DIRECTION ARROWS
-        c.drawBitmap(Arrows.ARROWS.getSprite(snakeMoveTo, 10),(GameConstants.GAME_WIDTH - 100)/2, GameConstants.GAME_HEIGHT * 2/20,null);
-
-
-
-
-
         if(!game.getInputMethodIsSwipe()){
             //display arrow buttons
+            c.drawBitmap(ButtonImages.UP_ARROW.getBtnImg(upBtn.isPushed()),
+                    upBtn.getHitbox().left, upBtn.getHitbox().top, null);
 
+            c.drawBitmap(ButtonImages.RIGHT_ARROW.getBtnImg(rightBtn.isPushed()),
+                    rightBtn.getHitbox().left, rightBtn.getHitbox().top, null);
 
+            c.drawBitmap(ButtonImages.DOWN_ARROW.getBtnImg(downBtn.isPushed()),
+                    downBtn.getHitbox().left, downBtn.getHitbox().top, null);
 
+            c.drawBitmap(ButtonImages.LEFT_ARROW.getBtnImg(leftBtn.isPushed()),
+                    leftBtn.getHitbox().left, leftBtn.getHitbox().top, null);
         }
 
 
 
+        //MOVING DIRECTION ARROWS
+        c.drawBitmap(Arrows.ARROWS.getSprite(snakeMoveTo, 10),(GameConstants.GAME_WIDTH - 100)/2, GameConstants.GAME_HEIGHT * 2/20,null);
 
     }
 
@@ -399,6 +402,41 @@ public class Playing extends BaseState implements GameStateInterface {
 
         if (!game.getInputMethodIsSwipe()){
             //Arrows
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+
+                    if (isIn(event, upBtn)){
+                        upBtn.setPushed(true);
+                    } else if (isIn(event, rightBtn)) {
+                        rightBtn.setPushed(true);
+                    } else if (isIn(event, downBtn)) {
+                        downBtn.setPushed(true);
+                    } else if (isIn(event, leftBtn)) {
+                        leftBtn.setPushed(true);
+                    }
+
+                    break;
+
+                case MotionEvent.ACTION_UP:
+
+                    if (upBtn.isPushed()){
+                        setSnakeMoveTo(GameConstants.FACE_Dir.UP);
+                    } else if (rightBtn.isPushed()) {
+                        setSnakeMoveTo(GameConstants.FACE_Dir.RIGHT);
+                    } else if (downBtn.isPushed()) {
+                        setSnakeMoveTo(GameConstants.FACE_Dir.DOWN);
+                    } else if (leftBtn.isPushed()) {
+                        setSnakeMoveTo(GameConstants.FACE_Dir.LEFT);
+                    }
+
+                    upBtn.setPushed(false);
+                    rightBtn.setPushed(false);
+                    downBtn.setPushed(false);
+                    leftBtn.setPushed(false);
+
+                    break;
+            }
+
 
         } else {
             //Swipe
@@ -427,11 +465,11 @@ public class Playing extends BaseState implements GameStateInterface {
                         if (Math.abs(xDiff) >= Math.abs(yDiff)){
                             //Horizontal
                             if (xDiff > 0) {
-                                //Left
-                                snakeMoveTo = GameConstants.FACE_Dir.LEFT;
-                            }else{
                                 //Right
                                 snakeMoveTo = GameConstants.FACE_Dir.RIGHT;
+                            }else{
+                                //Left
+                                snakeMoveTo = GameConstants.FACE_Dir.LEFT;
                             }
                         } else {
                             //Vertical
@@ -503,32 +541,6 @@ public class Playing extends BaseState implements GameStateInterface {
                         break;
                     }
                 }
-
-                /*
-                float moveToY = snakePoints.get(0).getYPosition();
-                float moveToX = snakePoints.get(0).getXPosition();
-
-                switch (snakeMoveTo) {
-                    case GameConstants.FACE_Dir.UP:
-                        moveToY -= BScaler;
-                        break;
-                    case GameConstants.FACE_Dir.LEFT:
-                        moveToX += BScaler;
-                        break;
-                    case GameConstants.FACE_Dir.DOWN:
-                        moveToY += BScaler;
-                        break;
-                    case GameConstants.FACE_Dir.RIGHT:
-                        moveToX -= BScaler;
-                        break;
-                }
-
-                if (moveToY == currentY && moveToX == currentX) {
-                    isOccupied = true;
-                }
-
-                 */
-
 
                 if (!isOccupied) {
                     //valid position found
